@@ -22,6 +22,7 @@ export default function Home() {
           <div className={styles.heroInner}>
             <p className={`${styles.eyebrow} mono`}>
               <span className={styles.status} /> Available for new work
+              {profile.location ? ` · ${profile.location}` : ""}
             </p>
             <h1 className={styles.title}>
               Hi, I&apos;m {profile.firstName}. I build{" "}

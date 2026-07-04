@@ -4,7 +4,7 @@ export const profile = {
   role: "Software Developer",
   tagline:
     "I'm a software developer building AI-powered, full-stack web applications — from polished React frontends to secure, intelligent backends.",
-  location: "",
+  location: "India",
   email: "0810sonimanish@gmail.com",
   resumeUrl: "#",
   socials: [
