@@ -85,7 +85,17 @@ export default function ContactForm() {
   }
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit} noValidate>
+    <form
+      className={styles.form}
+      onSubmit={handleSubmit}
+      aria-busy={status === "loading"}
+      noValidate
+    >
+      {/* Announces submission progress to screen readers (WCAG 4.1.3). */}
+      <p className="sr-only" aria-live="polite">
+        {status === "loading" ? "Sending your message…" : ""}
+      </p>
+
       {/* Honeypot: hidden from real users; bots that fill it are rejected. */}
       <div className={styles.honeypot} aria-hidden="true">
         <label htmlFor="company">Company (leave this empty)</label>

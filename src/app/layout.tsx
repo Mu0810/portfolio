@@ -78,6 +78,9 @@ export default function RootLayout({
         </noscript>
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable}`}>
+        <a href="#top" className="skip-link">
+          Skip to content
+        </a>
         {children}
       </body>
     </html>
