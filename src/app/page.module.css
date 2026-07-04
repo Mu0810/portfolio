@@ -401,6 +401,31 @@
   font-family: var(--font-mono);
 }
 
+.viewAllWrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.25rem;
+}
+
+.viewAll {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text);
+  transition: transform var(--transition), border-color var(--transition),
+    color var(--transition);
+}
+
+.viewAll:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* ---------- Experience ---------- */
 .timeline {
   display: flex;

@@ -1,5 +1,7 @@
+import Link from "next/link";
 import Nav from "@/components/Nav";
 import Reveal from "@/components/Reveal";
+import ContactForm from "@/components/ContactForm";
 import styles from "./page.module.css";
 import {
   profile,
@@ -158,6 +160,11 @@ export default function Home() {
               </Reveal>
             ))}
           </div>
+          <Reveal className={styles.viewAllWrap}>
+            <Link href="/projects" className={styles.viewAll}>
+              View all projects →
+            </Link>
+          </Reveal>
         </section>
 
         {/* Experience */}
@@ -198,8 +205,9 @@ export default function Home() {
             </h2>
             <p className={styles.contactText}>
               Have a project in mind, a role to fill, or just want to say hello?
-              My inbox is always open.
+              Drop me a message below — or email me directly.
             </p>
+            <ContactForm />
             <a href={`mailto:${profile.email}`} className={styles.emailBtn}>
               {profile.email}
             </a>

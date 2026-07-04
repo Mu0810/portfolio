@@ -3,7 +3,7 @@ export const profile = {
   firstName: "Manish",
   role: "Software Developer",
   tagline:
-    "I'm a software developer building AI-powered, full-stack web applications — from polished React frontends to secure, intelligent backends.",
+    "I turn ideas into AI-powered products — building full-stack web apps with React, Next.js, and modern LLM tooling, backed by clean, secure code.",
   location: "India",
   email: "0810sonimanish@gmail.com",
   resumeUrl: "#",

@@ -1,16 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 import styles from "./Nav.module.css";
 import { profile } from "@/lib/data";
 
 const links = [
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Work", href: "#work" },
-  { label: "Experience", href: "#experience" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/#about" },
+  { label: "Skills", href: "/#skills" },
+  { label: "Work", href: "/#work" },
+  { label: "Projects", href: "/projects" },
+  { label: "Experience", href: "/#experience" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export default function Nav() {
@@ -27,16 +29,16 @@ export default function Nav() {
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}>
       <nav className={styles.nav}>
-        <a href="#top" className={styles.brand} aria-label="Home">
+        <Link href="/" className={styles.brand} aria-label="Home">
           <span className={styles.brandDot} />
           {profile.firstName}
           <span className={styles.brandAccent}>.</span>
-        </a>
+        </Link>
 
         <ul className={styles.links}>
           {links.map((link) => (
             <li key={link.href}>
-              <a href={link.href}>{link.label}</a>
+              <Link href={link.href}>{link.label}</Link>
             </li>
           ))}
         </ul>
@@ -57,9 +59,13 @@ export default function Nav() {
 
       <div className={`${styles.mobileMenu} ${open ? styles.mobileOpen : ""}`}>
         {links.map((link) => (
-          <a key={link.href} href={link.href} onClick={() => setOpen(false)}>
+          <Link
+            key={link.href}
+            href={link.href}
+            onClick={() => setOpen(false)}
+          >
             {link.label}
-          </a>
+          </Link>
         ))}
       </div>
     </header>
