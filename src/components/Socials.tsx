@@ -11,8 +11,12 @@ export default function Socials({ className }: { className?: string }) {
           target="_blank"
           rel="noopener noreferrer"
           className={styles.link}
+          aria-label={`${s.label} (opens in a new tab)`}
         >
           {s.label}
+          <span aria-hidden="true" className={styles.arrow}>
+            ↗
+          </span>
         </a>
       ))}
     </div>

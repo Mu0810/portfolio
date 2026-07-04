@@ -5,17 +5,17 @@
 }
 
 .link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--text-muted);
-  position: relative;
   transition: color var(--transition);
 }
 
-.link::after {
-  content: "↗";
+.arrow {
   font-size: 0.75rem;
-  margin-left: 0.25rem;
   opacity: 0.6;
 }
 

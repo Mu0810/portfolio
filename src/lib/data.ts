@@ -85,7 +85,8 @@ export type Project = {
   description: string;
   tags: string[];
   year: string;
-  href: string;
+  href: string; // source code (repo)
+  demo?: string; // live deployment, if any
   featured?: boolean;
 };
 
@@ -115,6 +116,7 @@ export const projects: Project[] = [
     tags: ["JavaScript", "Python", "AI Agents", "Vercel"],
     year: "2026",
     href: "https://github.com/Mu0810/AI-agent",
+    demo: "https://ai-agent-khaki-psi.vercel.app",
     featured: true,
   },
   {

@@ -34,6 +34,7 @@ export default function ProjectsPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.inlineLink}
+                aria-label="GitHub (opens in a new tab)"
               >
                 GitHub
               </a>
