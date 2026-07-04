@@ -26,6 +26,16 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Close the mobile menu on Escape.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}>
       <nav className={styles.nav}>
@@ -49,6 +59,7 @@ export default function Nav() {
             className={styles.menuBtn}
             aria-label="Toggle menu"
             aria-expanded={open}
+            aria-controls="mobile-menu"
             onClick={() => setOpen((v) => !v)}
           >
             <span className={`${styles.bar} ${open ? styles.barOpen1 : ""}`} />
@@ -57,7 +68,11 @@ export default function Nav() {
         </div>
       </nav>
 
-      <div className={`${styles.mobileMenu} ${open ? styles.mobileOpen : ""}`}>
+      <div
+        id="mobile-menu"
+        className={`${styles.mobileMenu} ${open ? styles.mobileOpen : ""}`}
+        inert={!open}
+      >
         {links.map((link) => (
           <Link
             key={link.href}

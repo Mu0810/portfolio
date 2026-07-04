@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Reveal from "@/components/Reveal";
+import ProjectCard from "@/components/ProjectCard";
+import Footer from "@/components/Footer";
 import styles from "./projects.module.css";
-import { profile, projects } from "@/lib/data";
+import { projects } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Projects — Manish Kumar Soni",
@@ -12,8 +14,6 @@ export const metadata: Metadata = {
 };
 
 export default function ProjectsPage() {
-  const year = new Date().getFullYear();
-
   return (
     <>
       <Nav />
@@ -44,51 +44,23 @@ export default function ProjectsPage() {
 
         <section className={styles.grid}>
           {projects.map((project, i) => (
-            <Reveal
+            <ProjectCard
               key={project.title}
+              project={project}
               delay={(i % 2) * 90}
-              className={styles.card}
-            >
-              <a
-                href={project.href}
-                className={styles.cardLink}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <div className={styles.cardTop}>
-                  <span className={`${styles.cardYear} mono`}>
-                    {project.year}
-                  </span>
-                  {project.featured ? (
-                    <span className={styles.badge}>Featured</span>
-                  ) : null}
-                  <span className={styles.arrow} aria-hidden="true">
-                    ↗
-                  </span>
-                </div>
-                <h2 className={styles.cardTitle}>{project.title}</h2>
-                <p className={styles.cardDesc}>{project.description}</p>
-                <ul className={styles.tagList}>
-                  {project.tags.map((tag) => (
-                    <li key={tag} className={styles.tag}>
-                      {tag}
-                    </li>
-                  ))}
-                </ul>
-              </a>
-            </Reveal>
+              titleAs="h2"
+            />
           ))}
         </section>
       </main>
 
-      <footer className={styles.footer}>
-        <span>
-          © {year} {profile.name}
-        </span>
-        <Link href="/#contact" className={styles.footerLink}>
-          Get in touch →
-        </Link>
-      </footer>
+      <Footer
+        note={
+          <Link href="/#contact" className={styles.footerLink}>
+            Get in touch →
+          </Link>
+        }
+      />
     </>
   );
 }

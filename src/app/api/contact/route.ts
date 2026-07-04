@@ -4,9 +4,50 @@ type ContactPayload = {
   name?: string;
   email?: string;
   message?: string;
+  // Anti-spam fields (see ContactForm.tsx):
+  company?: string; // honeypot — real users never fill this
+  ts?: number; // client timestamp of when the form was rendered
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const NAME_MAX = 100;
+const EMAIL_MAX = 200;
+const MESSAGE_MAX = 5000;
+
+// Minimum time (ms) a genuine human takes to fill the form. Bots submit instantly.
+const MIN_SUBMIT_MS = 2000;
+
+// --- Simple in-memory, per-IP rate limiter -------------------------------
+// Note: in-memory state is per serverless instance and resets on cold start.
+// It stops casual abuse cheaply; use a shared store (e.g. Upstash Redis) for
+// strict, cross-instance guarantees.
+const RATE_LIMIT = 5; // max requests
+const RATE_WINDOW_MS = 10 * 60 * 1000; // per 10 minutes
+const hits = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const windowStart = now - RATE_WINDOW_MS;
+  const recent = (hits.get(ip) ?? []).filter((t) => t > windowStart);
+  recent.push(now);
+  hits.set(ip, recent);
+
+  // Opportunistic cleanup so the map doesn't grow unbounded.
+  if (hits.size > 5000) {
+    for (const [key, times] of hits) {
+      if (times.every((t) => t <= windowStart)) hits.delete(key);
+    }
+  }
+
+  return recent.length > RATE_LIMIT;
+}
+
+function getClientIp(request: Request): string {
+  const fwd = request.headers.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0].trim();
+  return request.headers.get("x-real-ip") || "unknown";
+}
 
 function escapeHtml(input: string) {
   return input
@@ -18,16 +59,43 @@ function escapeHtml(input: string) {
 }
 
 export async function POST(request: Request) {
-  let body: ContactPayload;
+  // Rate limit first — cheapest rejection.
+  if (isRateLimited(getClientIp(request))) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again in a few minutes." },
+      { status: 429 }
+    );
+  }
+
+  let body: unknown;
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const name = body.name?.trim() ?? "";
-  const email = body.email?.trim() ?? "";
-  const message = body.message?.trim() ?? "";
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+  }
+
+  const payload = body as ContactPayload;
+
+  // Honeypot: if the hidden field is filled, silently accept (don't tip off bots).
+  if (typeof payload.company === "string" && payload.company.trim() !== "") {
+    return NextResponse.json({ ok: true });
+  }
+
+  // Timing check: reject submissions that arrive implausibly fast.
+  if (typeof payload.ts === "number" && Date.now() - payload.ts < MIN_SUBMIT_MS) {
+    return NextResponse.json(
+      { error: "Please take a moment before submitting." },
+      { status: 400 }
+    );
+  }
+
+  const name = payload.name?.trim() ?? "";
+  const email = payload.email?.trim() ?? "";
+  const message = payload.message?.trim() ?? "";
 
   if (!name || !email || !message) {
     return NextResponse.json(
@@ -35,15 +103,21 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-  if (!EMAIL_RE.test(email)) {
+  if (name.length > NAME_MAX) {
+    return NextResponse.json(
+      { error: `Name is too long (max ${NAME_MAX} characters).` },
+      { status: 400 }
+    );
+  }
+  if (email.length > EMAIL_MAX || !EMAIL_RE.test(email)) {
     return NextResponse.json(
       { error: "Please enter a valid email address." },
       { status: 400 }
     );
   }
-  if (message.length > 5000) {
+  if (message.length > MESSAGE_MAX) {
     return NextResponse.json(
-      { error: "Message is too long (max 5000 characters)." },
+      { error: `Message is too long (max ${MESSAGE_MAX} characters).` },
       { status: 400 }
     );
   }

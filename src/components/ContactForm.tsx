@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./ContactForm.module.css";
 import { profile } from "@/lib/data";
 
@@ -10,6 +10,13 @@ export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
   const [showMailto, setShowMailto] = useState(false);
+  // Records when the form became interactive on the client, used server-side
+  // as a lightweight bot check (see /api/contact).
+  const mountedAt = useRef<number>(0);
+
+  useEffect(() => {
+    mountedAt.current = Date.now();
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -23,6 +30,8 @@ export default function ContactForm() {
       name: String(data.get("name") || ""),
       email: String(data.get("email") || ""),
       message: String(data.get("message") || ""),
+      company: String(data.get("company") || ""), // honeypot
+      ts: mountedAt.current,
     };
 
     try {
@@ -77,6 +86,18 @@ export default function ContactForm() {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit} noValidate>
+      {/* Honeypot: hidden from real users; bots that fill it are rejected. */}
+      <div className={styles.honeypot} aria-hidden="true">
+        <label htmlFor="company">Company (leave this empty)</label>
+        <input
+          id="company"
+          name="company"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       <div className={styles.row}>
         <div className={styles.field}>
           <label htmlFor="name" className={styles.label}>

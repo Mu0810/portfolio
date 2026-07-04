@@ -2,6 +2,9 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import Reveal from "@/components/Reveal";
 import ContactForm from "@/components/ContactForm";
+import ProjectCard from "@/components/ProjectCard";
+import Socials from "@/components/Socials";
+import Footer from "@/components/Footer";
 import styles from "./page.module.css";
 import {
   profile,
@@ -13,8 +16,6 @@ import {
 } from "@/lib/data";
 
 export default function Home() {
-  const year = new Date().getFullYear();
-
   return (
     <>
       <Nav />
@@ -42,19 +43,7 @@ export default function Home() {
               </a>
             </div>
 
-            <div className={styles.socials}>
-              {profile.socials.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.socialLink}
-                >
-                  {s.label}
-                </a>
-              ))}
-            </div>
+            <Socials />
           </div>
 
           <div className={styles.scrollHint} aria-hidden="true">
@@ -126,38 +115,11 @@ export default function Home() {
           </Reveal>
           <div className={styles.projectsGrid}>
             {projects.map((project, i) => (
-              <Reveal
+              <ProjectCard
                 key={project.title}
+                project={project}
                 delay={(i % 2) * 90}
-                className={`${styles.projectCard} ${
-                  project.featured ? styles.featured : ""
-                }`}
-              >
-                <a
-                  href={project.href}
-                  className={styles.projectLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <div className={styles.projectTop}>
-                    <span className={`${styles.projectYear} mono`}>
-                      {project.year}
-                    </span>
-                    <span className={styles.projectArrow} aria-hidden="true">
-                      ↗
-                    </span>
-                  </div>
-                  <h3 className={styles.projectTitle}>{project.title}</h3>
-                  <p className={styles.projectDesc}>{project.description}</p>
-                  <ul className={styles.tagList}>
-                    {project.tags.map((tag) => (
-                      <li key={tag} className={styles.tag}>
-                        {tag}
-                      </li>
-                    ))}
-                  </ul>
-                </a>
-              </Reveal>
+              />
             ))}
           </div>
           <Reveal className={styles.viewAllWrap}>
@@ -211,31 +173,12 @@ export default function Home() {
             <a href={`mailto:${profile.email}`} className={styles.emailBtn}>
               {profile.email}
             </a>
-            <div className={styles.socials}>
-              {profile.socials.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.socialLink}
-                >
-                  {s.label}
-                </a>
-              ))}
-            </div>
+            <Socials />
           </Reveal>
         </section>
       </main>
 
-      <footer className={styles.footer}>
-        <span>
-          © {year} {profile.name}
-        </span>
-        <span className={styles.footerNote}>
-          Built with Next.js · Designed &amp; coded with care
-        </span>
-      </footer>
+      <Footer />
     </>
   );
 }

@@ -1,0 +1,24 @@
+.socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  position: relative;
+  transition: color var(--transition);
+}
+
+.link::after {
+  content: "↗";
+  font-size: 0.75rem;
+  margin-left: 0.25rem;
+  opacity: 0.6;
+}
+
+.link:hover {
+  color: var(--accent);
+}

@@ -14,7 +14,12 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+// Set NEXT_PUBLIC_SITE_URL to your deployed URL so OG/Twitter cards and
+// canonical links resolve to absolute URLs.
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Manish Kumar Soni — Software Developer",
   description:
     "Portfolio of Manish Kumar Soni, a software developer building AI-powered, full-stack web applications with React, Next.js, and TypeScript.",
@@ -33,7 +38,15 @@ export const metadata: Metadata = {
     title: "Manish Kumar Soni — Software Developer",
     description:
       "Software developer building AI-powered, full-stack web applications with React, Next.js, and TypeScript.",
+    url: "/",
+    siteName: "Manish Kumar Soni",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Manish Kumar Soni — Software Developer",
+    description:
+      "Software developer building AI-powered, full-stack web applications with React, Next.js, and TypeScript.",
   },
 };
 
@@ -59,6 +72,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {/* Without JS, scroll-reveal can't run — keep all content visible. */}
+        <noscript>
+          <style>{`.reveal{opacity:1 !important;transform:none !important;}`}</style>
+        </noscript>
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable}`}>
         {children}
