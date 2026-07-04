@@ -14,12 +14,28 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-// Set NEXT_PUBLIC_SITE_URL to your deployed URL so OG/Twitter cards and
-// canonical links resolve to absolute URLs.
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
+// Resolve the canonical site URL for absolute OG/Twitter/canonical links.
+// Accepts NEXT_PUBLIC_SITE_URL with or without a protocol, falls back to
+// Vercel's own env vars, and never throws — a bad value must not break the build.
+function resolveSiteUrl(): URL {
+  const fallback = new URL("https://example.com");
+  const raw =
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+    process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim() ||
+    process.env.VERCEL_URL?.trim();
+
+  if (!raw) return fallback;
+
+  const withProtocol = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  try {
+    return new URL(withProtocol);
+  } catch {
+    return fallback;
+  }
+}
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: resolveSiteUrl(),
   title: "Manish Kumar Soni — Software Developer",
   description:
     "Portfolio of Manish Kumar Soni, a software developer building AI-powered, full-stack web applications with React, Next.js, and TypeScript.",
