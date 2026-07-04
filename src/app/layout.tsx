@@ -15,23 +15,24 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Alex Rivera — Software Engineer & Product Builder",
+  title: "Manish Kumar Soni — Software Developer",
   description:
-    "Portfolio of Alex Rivera, a full-stack software engineer crafting fast, accessible, and delightful web experiences.",
+    "Portfolio of Manish Kumar Soni, a software developer building AI-powered, full-stack web applications with React, Next.js, and TypeScript.",
   keywords: [
-    "software engineer",
+    "Manish Kumar Soni",
+    "software developer",
     "full-stack developer",
-    "web developer",
+    "AI developer",
     "portfolio",
     "react",
     "next.js",
     "typescript",
   ],
-  authors: [{ name: "Alex Rivera" }],
+  authors: [{ name: "Manish Kumar Soni" }],
   openGraph: {
-    title: "Alex Rivera — Software Engineer & Product Builder",
+    title: "Manish Kumar Soni — Software Developer",
     description:
-      "Full-stack engineer crafting fast, accessible, and delightful web experiences.",
+      "Software developer building AI-powered, full-stack web applications with React, Next.js, and TypeScript.",
     type: "website",
   },
 };

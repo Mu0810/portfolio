@@ -25,7 +25,7 @@ export default function Home() {
             </p>
             <h1 className={styles.title}>
               Hi, I&apos;m {profile.firstName}. I build{" "}
-              <span className={styles.gradient}>thoughtful software</span> for
+              <span className={styles.gradient}>AI-powered software</span> for
               the web.
             </h1>
             <p className={styles.subtitle}>{profile.tagline}</p>

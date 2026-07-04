@@ -1,44 +1,82 @@
 export const profile = {
-  name: "Alex Rivera",
-  firstName: "Alex",
-  role: "Full-Stack Software Engineer",
+  name: "Manish Kumar Soni",
+  firstName: "Manish",
+  role: "Software Developer",
   tagline:
-    "I design and build fast, accessible, and delightful products for the web — from pixel to production.",
-  location: "San Francisco, CA",
-  email: "hello@alexrivera.dev",
+    "I'm a software developer building AI-powered, full-stack web applications — from polished React frontends to secure, intelligent backends.",
+  location: "",
+  email: "0810sonimanish@gmail.com",
   resumeUrl: "#",
   socials: [
-    { label: "GitHub", href: "https://github.com" },
-    { label: "LinkedIn", href: "https://linkedin.com" },
-    { label: "X", href: "https://x.com" },
+    { label: "GitHub", href: "https://github.com/Mu0810" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/sonimanixh" },
   ],
 };
 
 export const stats = [
-  { value: "6+", label: "Years building" },
-  { value: "40+", label: "Projects shipped" },
-  { value: "12", label: "Open-source repos" },
-  { value: "∞", label: "Cups of coffee" },
+  { value: "8+", label: "GitHub projects" },
+  { value: "20+", label: "Technologies & tools" },
+  { value: "5+", label: "AI apps built" },
+  { value: "∞", label: "Curiosity to learn" },
 ];
 
 export const about = [
-  "I'm a full-stack engineer who loves turning ambiguous ideas into products people enjoy using. My sweet spot is the seam between thoughtful UI and reliable systems — where design decisions meet real-world constraints.",
-  "Over the last several years I've led feature work across startups and scale-ups, shipping everything from design systems and dashboards to high-throughput APIs. I care deeply about performance, accessibility, and writing code that's a pleasure for the next person to read.",
-  "When I'm not shipping, you'll find me contributing to open source, mentoring newer engineers, or chasing the perfect pour-over.",
+  "I'm Manish, a software developer who loves turning ideas into working products. My focus is full-stack web development with a strong pull toward AI — building apps that are fast, secure, and genuinely useful.",
+  "I work across the stack with TypeScript, React, Next.js, and Node.js, and I'm especially interested in the modern AI toolchain: LLM APIs, retrieval-augmented generation, AI agents, and the Model Context Protocol. I also care about writing secure code, following OWASP practices, and getting authentication right.",
+  "Most of my experience comes from building real projects — for private businesses and as personal work — where I own features end to end, from UI to backend to deployment.",
 ];
 
 export const skillGroups = [
   {
+    title: "Languages",
+    items: ["Python", "JavaScript", "TypeScript", "C++", "SQL"],
+  },
+  {
     title: "Frontend",
-    items: ["TypeScript", "React", "Next.js", "Tailwind CSS", "Framer Motion", "Vue"],
+    items: ["React.js", "Next.js", "Tailwind CSS", "HTML5", "CSS3"],
   },
   {
-    title: "Backend",
-    items: ["Node.js", "Python", "Go", "PostgreSQL", "Redis", "GraphQL"],
+    title: "Backend & Tools",
+    items: [
+      "Node.js",
+      "Git & GitHub",
+      "Docker",
+      "System Design",
+      "Design Patterns",
+      "OOP",
+    ],
   },
   {
-    title: "Platform & Tooling",
-    items: ["AWS", "Docker", "Kubernetes", "Terraform", "CI/CD", "Vercel"],
+    title: "AI & Modern Development",
+    items: [
+      "OpenAI API",
+      "LLM Integration",
+      "RAG",
+      "AI Agents",
+      "MCP",
+      "Prompt Engineering",
+    ],
+  },
+  {
+    title: "Security",
+    items: [
+      "Secure Coding",
+      "OWASP Top 10",
+      "JWT Security",
+      "Auth & Authorization",
+      "Cybersecurity",
+    ],
+  },
+  {
+    title: "Soft Skills",
+    items: [
+      "Problem Solving",
+      "Communication",
+      "Team Collaboration",
+      "Debugging",
+      "Critical Thinking",
+      "Adaptability",
+    ],
   },
 ];
 
@@ -53,38 +91,47 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "Nimbus Analytics",
+    title: "BuyWise AI",
     description:
-      "A real-time analytics platform processing millions of events per day. I built the streaming ingestion pipeline and the interactive dashboard used by 3k+ teams.",
-    tags: ["Next.js", "Go", "ClickHouse", "WebSockets"],
-    year: "2025",
-    href: "#",
+      "An AI-powered shopping intelligence platform that helps users make smarter purchase decisions. Built on the latest Next.js 16 and React 19 stack with TypeScript.",
+    tags: ["Next.js 16", "React 19", "TypeScript", "AI"],
+    year: "2026",
+    href: "https://github.com/Mu0810/buywise-ai",
     featured: true,
   },
   {
-    title: "Palette Design System",
+    title: "HireFlow AI",
     description:
-      "An open-source, fully accessible React component library with theming, 60+ components, and zero-runtime styling. 4k+ GitHub stars.",
-    tags: ["React", "TypeScript", "a11y", "Storybook"],
-    year: "2024",
-    href: "#",
+      "An AI-assisted hiring workflow app that streamlines the recruitment process. A full TypeScript project exploring practical LLM integration in real product flows.",
+    tags: ["TypeScript", "Next.js", "AI", "LLM"],
+    year: "2026",
+    href: "https://github.com/Mu0810/hireflow-ai",
     featured: true,
   },
   {
-    title: "Ledger",
+    title: "AI Agent",
     description:
-      "A privacy-first personal finance app with local-first sync and end-to-end encryption. Designed the data model and offline-first architecture.",
-    tags: ["React Native", "SQLite", "CRDTs"],
-    year: "2024",
-    href: "#",
+      "A hybrid AI-agent playground combining JavaScript and Python for building, experimenting with, and deploying agent workflows — with a live deployment on Vercel.",
+    tags: ["JavaScript", "Python", "AI Agents", "Vercel"],
+    year: "2026",
+    href: "https://github.com/Mu0810/AI-agent",
+    featured: true,
   },
   {
-    title: "Orbit CLI",
+    title: "Health WebApp",
     description:
-      "A developer tool that scaffolds and deploys full-stack apps in seconds. Focused on great DX and helpful error messages.",
-    tags: ["Node.js", "Rust", "DX"],
-    year: "2023",
-    href: "#",
+      "A health-focused web application built with Next.js and TypeScript, aimed at tracking and presenting personal health data in a clean, responsive interface.",
+    tags: ["Next.js", "TypeScript", "React"],
+    year: "2026",
+    href: "https://github.com/Mu0810/health-webapp",
+  },
+  {
+    title: "Water Tracking",
+    description:
+      "A native Android app written in Kotlin that helps users track their daily water intake and build healthier hydration habits.",
+    tags: ["Kotlin", "Android", "Mobile"],
+    year: "2026",
+    href: "https://github.com/Mu0810/water_tracking",
   },
 ];
 
@@ -97,24 +144,17 @@ export type Experience = {
 
 export const experience: Experience[] = [
   {
-    role: "Senior Software Engineer",
-    company: "Northwind Labs",
+    role: "Software Developer",
+    company: "Freelance / Self-Employed",
+    period: "2024 — Present",
+    description:
+      "Design and build full-stack web applications and AI-powered products for private businesses. Own features end to end — from React/Next.js frontends to secure Node.js backends, authentication, and deployment.",
+  },
+  {
+    role: "AI & Full-Stack Projects",
+    company: "Personal & Open Source",
     period: "2023 — Present",
     description:
-      "Lead frontend architecture for the flagship product. Drove a design-system migration that cut UI bugs by 40% and shipped a real-time collaboration layer.",
-  },
-  {
-    role: "Full-Stack Engineer",
-    company: "Brightwave",
-    period: "2021 — 2023",
-    description:
-      "Built and owned core billing and onboarding flows end-to-end. Reduced API p95 latency by 60% and mentored two junior engineers.",
-  },
-  {
-    role: "Software Engineer",
-    company: "Foundry Studio",
-    period: "2019 — 2021",
-    description:
-      "Delivered client web apps across e-commerce and media. Introduced automated testing and CI, taking deploys from weekly to daily.",
+      "Build and ship self-driven projects exploring the modern AI stack — LLM APIs, RAG, AI agents, and MCP — alongside full-stack web and mobile apps published on GitHub.",
   },
 ];
