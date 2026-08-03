@@ -46,7 +46,6 @@ export default function Nav() {
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}>
       <nav className={styles.nav}>
         <Link href="/" className={styles.brand} aria-label="Home">
-          <span className={styles.brandDot} />
           {profile.firstName}
           <span className={styles.brandAccent}>.</span>
         </Link>

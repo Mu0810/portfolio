@@ -51,9 +51,10 @@ export default function Avatar() {
           </div>
         )}
       </div>
-      <figcaption className={styles.caption}>
-        {src ? profile.name : "Photograph pending"}
-      </figcaption>
+      {/* Caption only when there is a photograph to caption. With the monogram
+          fallback, a caption reading "photograph pending" advertises something
+          missing; the plate reads as a deliberate mark without one. */}
+      {src && <figcaption className={styles.caption}>{profile.name}</figcaption>}
     </figure>
   );
 }
