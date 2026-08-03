@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Reveal from "@/components/Reveal";
-import ProjectCard from "@/components/ProjectCard";
+import ProjectRow from "@/components/ProjectRow";
 import Footer from "@/components/Footer";
 import styles from "./projects.module.css";
 import { projects } from "@/lib/data";
@@ -44,15 +44,17 @@ export default function ProjectsPage() {
           </Reveal>
         </header>
 
-        <section className={styles.grid}>
-          {projects.map((project, i) => (
-            <ProjectCard
-              key={project.title}
-              project={project}
-              delay={(i % 2) * 90}
-              titleAs="h2"
-            />
-          ))}
+        <section>
+          <ol className={styles.index}>
+            {projects.map((project, i) => (
+              <ProjectRow
+                key={project.title}
+                project={project}
+                index={i}
+                titleAs="h2"
+              />
+            ))}
+          </ol>
         </section>
       </main>
 

@@ -10,8 +10,8 @@
   gap: 0.25rem;
   font-size: 0.9rem;
   font-weight: 500;
-  color: var(--text-muted);
-  transition: color var(--transition);
+  color: var(--ink-2);
+  transition: color 0.25s var(--ease);
 }
 
 .arrow {

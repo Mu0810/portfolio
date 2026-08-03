@@ -4,11 +4,11 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--bg-elevated);
-  color: var(--text);
-  transition: border-color var(--transition), transform var(--transition),
-    background var(--transition);
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  color: var(--ink);
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease),
+    background 0.25s var(--ease);
 }
 
 .toggle:hover {

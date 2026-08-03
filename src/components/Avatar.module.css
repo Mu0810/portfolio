@@ -1,85 +1,21 @@
+/* Portrait as a plate in a printed page: hairline frame, no ring, no glow,
+   no floating badge. The rotating conic gradient and pulsing dot were part of
+   what made the previous hero read as generated. */
+
 .frame {
   position: relative;
-  width: clamp(216px, 30vw, 320px);
+  width: 100%;
+  max-width: 14rem;
   aspect-ratio: 4 / 5;
-  flex-shrink: 0;
-  isolation: isolate;
-}
-
-/* Conic-gradient ring, rotated by an @property-animated angle so it stays
-   smooth rather than stepping through repaints. */
-.ring {
-  position: absolute;
-  inset: -2px;
-  border-radius: calc(var(--radius-lg) + 4px);
-  background: conic-gradient(
-    from var(--ring-angle, 0deg),
-    var(--brand-from),
-    var(--brand-mid),
-    var(--brand-to),
-    var(--brand-from)
-  );
-  animation: spin 7s linear infinite;
-  z-index: -1;
-}
-
-.glow {
-  position: absolute;
-  inset: -18%;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--accent-glow), transparent 65%);
-  filter: blur(28px);
-  z-index: -2;
-  animation: breathe 6s var(--ease) infinite;
-}
-
-@property --ring-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-
-@keyframes spin {
-  to {
-    --ring-angle: 360deg;
-  }
-}
-
-/* Fallback for engines without @property: rotate the element itself. */
-@supports not (background: conic-gradient(from var(--ring-angle), red, blue)) {
-  .ring {
-    animation: spinFallback 7s linear infinite;
-  }
-  @keyframes spinFallback {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-}
-
-@keyframes breathe {
-  0%,
-  100% {
-    opacity: 0.75;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.06);
-  }
 }
 
 .inner {
-  position: relative;
   width: 100%;
   height: 100%;
-  border-radius: var(--radius-lg);
   overflow: hidden;
-  background: var(--bg-subtle);
-  /* An inner hairline keeps the card's edge legible in light mode, where the
-     surface and the page background are close in value. */
-  border: 1px solid var(--border-strong);
-  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  background: var(--paper-2);
 }
 
 .photo {
@@ -87,9 +23,9 @@
   height: 100%;
   object-fit: cover;
   object-position: center 18%;
-  /* Nudge the portrait toward the page palette so it sits in the design
-     rather than on top of it. */
-  filter: saturate(1.04) contrast(1.03);
+  /* Very slight warm grade so the photo belongs to the paper palette rather
+     than sitting on top of it. */
+  filter: saturate(0.94) contrast(1.03);
 }
 
 /* ---------- monogram fallback ---------- */
@@ -99,71 +35,37 @@
   height: 100%;
   display: grid;
   place-items: center;
-  background:
-    radial-gradient(120% 90% at 30% 15%, var(--accent-soft), transparent 60%),
-    linear-gradient(145deg, var(--bg-elevated), var(--bg-inset));
   position: relative;
+  background: var(--paper-2);
 }
 
+/* Faint drafting grid, clipped so it fades out rather than ending abruptly. */
 .monogram::after {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(var(--border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border) 1px, transparent 1px);
-  background-size: 26px 26px;
-  opacity: 0.5;
-  mask-image: radial-gradient(circle at 50% 45%, #000 30%, transparent 72%);
+  background-image: linear-gradient(var(--rule) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(circle at 50% 45%, #000 25%, transparent 75%);
+  -webkit-mask-image: radial-gradient(circle at 50% 45%, #000 25%, transparent 75%);
 }
 
 .initials {
   position: relative;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 8vw, 3.6rem);
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+/* Caption under the plate, as a figure caption would be set. */
+.caption {
+  display: block;
+  margin-top: 0.6rem;
   font-family: var(--font-mono);
-  font-size: clamp(3rem, 9vw, 5rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  background: linear-gradient(135deg, var(--brand-from), var(--brand-to));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* ---------- status badge ---------- */
-
-.badge {
-  position: absolute;
-  bottom: -0.85rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.42rem 0.85rem;
-  border-radius: var(--radius-pill);
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-strong);
-  box-shadow: var(--shadow-sm);
-  font-size: 0.76rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
-}
-
-.dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22);
-  animation: pulse 2.4s var(--ease) infinite;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.45;
-  }
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
 }

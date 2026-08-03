@@ -4,19 +4,19 @@
   left: 0;
   right: 0;
   z-index: 100;
-  transition: background var(--transition), border-color var(--transition),
-    backdrop-filter var(--transition);
+  transition: background 0.25s var(--ease), border-color 0.25s var(--ease),
+    backdrop-filter 0.25s var(--ease);
   border-bottom: 1px solid transparent;
 }
 
 .scrolled {
-  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  background: color-mix(in srgb, var(--paper) 72%, transparent);
   backdrop-filter: blur(14px);
-  border-bottom-color: var(--border);
+  border-bottom-color: var(--rule);
 }
 
 .nav {
-  max-width: var(--max-width);
+  max-width: var(--measure);
   margin: 0 auto;
   padding: 0.9rem 1.5rem;
   display: flex;
@@ -38,8 +38,7 @@
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  box-shadow: 0 0 12px var(--accent-glow);
+  background: var(--accent);
 }
 
 .brandAccent {
@@ -55,9 +54,9 @@
 }
 
 .links a {
-  color: var(--text-muted);
+  color: var(--ink-2);
   position: relative;
-  transition: color var(--transition);
+  transition: color 0.25s var(--ease);
 }
 
 .links a::after {
@@ -68,12 +67,12 @@
   width: 0;
   height: 2px;
   border-radius: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  transition: width var(--transition);
+  background: var(--accent);
+  transition: width 0.25s var(--ease);
 }
 
 .links a:hover {
-  color: var(--text);
+  color: var(--ink);
 }
 
 .links a:hover::after {
@@ -92,7 +91,7 @@
   gap: 5px;
   width: 40px;
   height: 40px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--rule);
   border-radius: 10px;
   align-items: center;
   justify-content: center;
@@ -103,8 +102,8 @@
   width: 18px;
   height: 2px;
   border-radius: 2px;
-  background: var(--text);
-  transition: transform var(--transition), opacity var(--transition);
+  background: var(--ink);
+  transition: transform 0.25s var(--ease), opacity 0.25s var(--ease);
 }
 
 .barOpen1 {
@@ -120,27 +119,27 @@
   flex-direction: column;
   overflow: hidden;
   max-height: 0;
-  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid transparent;
-  transition: max-height 0.4s var(--ease), border-color var(--transition);
+  transition: max-height 0.4s var(--ease), border-color 0.25s var(--ease);
 }
 
 .mobileOpen {
   max-height: 320px;
-  border-bottom-color: var(--border);
+  border-bottom-color: var(--rule);
 }
 
 .mobileMenu a {
   padding: 0.9rem 1.5rem;
-  color: var(--text-muted);
-  border-top: 1px solid var(--border);
+  color: var(--ink-2);
+  border-top: 1px solid var(--rule);
   font-weight: 500;
 }
 
 .mobileMenu a:hover {
-  color: var(--text);
-  background: var(--bg-subtle);
+  color: var(--ink);
+  background: var(--paper-2);
 }
 
 @media (max-width: 720px) {

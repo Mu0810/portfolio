@@ -1,14 +1,30 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Instrument_Serif, Inter_Tight, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+/**
+ * Three typefaces, each with a job:
+ *  - Instrument Serif for display. High-contrast, slightly narrow, editorial —
+ *    it gives the page a voice that a UI sans cannot.
+ *  - Inter Tight for body copy. Tighter than Inter, so it sits under a serif
+ *    display without looking like a different website.
+ *  - JetBrains Mono for metadata, numbers and labels.
+ */
+const display = Instrument_Serif({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const sans = Inter_Tight({
   variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const mono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
   display: "swap",
@@ -93,7 +109,7 @@ export default function RootLayout({
           <style>{`.reveal{opacity:1 !important;transform:none !important;}`}</style>
         </noscript>
       </head>
-      <body className={`${inter.variable} ${jetbrainsMono.variable}`}>
+      <body className={`${display.variable} ${sans.variable} ${mono.variable}`}>
         <a href="#top" className="skip-link">
           Skip to content
         </a>
