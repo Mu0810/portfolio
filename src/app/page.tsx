@@ -1,6 +1,9 @@
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Reveal from "@/components/Reveal";
+import Aurora from "@/components/Aurora";
+import Avatar from "@/components/Avatar";
+import DownloadCV from "@/components/DownloadCV";
 import ContactForm from "@/components/ContactForm";
 import ProjectCard from "@/components/ProjectCard";
 import Socials from "@/components/Socials";
@@ -12,64 +15,110 @@ import {
   about,
   skillGroups,
   projects,
-  experience,
+  education,
+  principles,
 } from "@/lib/data";
 
+const MARQUEE = [
+  "TypeScript",
+  "Next.js",
+  "React",
+  "Node.js",
+  "PostgreSQL",
+  "Prisma",
+  "Python",
+  "FastAPI",
+  "Docker",
+  "Three.js",
+  "WebGL",
+  "GLSL",
+  "Redis",
+  "Stripe",
+  "Vitest",
+];
+
 export default function Home() {
+  const featured = projects.filter((p) => p.featured);
+
   return (
     <>
       <Nav />
-      <main id="top" className={styles.main}>
-        {/* Hero */}
+      <main id="top">
+        {/* ---------------- Hero ---------------- */}
         <section className={styles.hero}>
-          <div className={styles.heroInner}>
-            <p className={`${styles.eyebrow} mono`}>
-              <span className={styles.status} /> Available for new work
-              {profile.location ? ` · ${profile.location}` : ""}
-            </p>
-            <h1 className={styles.title}>
-              Hi, I&apos;m {profile.firstName}. I build{" "}
-              <span className={styles.gradient}>AI-powered software</span> for
-              the web.
-            </h1>
-            <p className={styles.subtitle}>{profile.tagline}</p>
+          <Aurora />
 
-            <div className={styles.heroCtas}>
-              <a href="#work" className={styles.btnPrimary}>
-                View my work
-              </a>
-              <a href="#contact" className={styles.btnGhost}>
-                Get in touch
-              </a>
+          <div className={styles.heroGrid}>
+            <div className={styles.heroText}>
+              <p className={`${styles.eyebrow} mono`}>
+                <span className={styles.status} aria-hidden="true" />
+                {profile.availability}
+              </p>
+
+              <h1 className={styles.title}>
+                <span className={styles.name}>{profile.name}</span>
+                I build full-stack systems, and I sweat the parts that{" "}
+                <span className={styles.gradient}>fail quietly</span>.
+              </h1>
+
+              <p className={styles.subtitle}>{profile.tagline}</p>
+
+              <div className={styles.heroCtas}>
+                <DownloadCV />
+                <a href="#work" className={styles.btnGhost}>
+                  See the work
+                </a>
+              </div>
+
+              <Socials className={styles.heroSocials} />
             </div>
 
-            <Socials />
+            <div className={styles.heroPortrait}>
+              <Avatar />
+            </div>
           </div>
 
           <div className={styles.scrollHint} aria-hidden="true">
             <span className={styles.mouse} />
-            Scroll
+            <span className="mono">scroll</span>
           </div>
         </section>
 
-        {/* Stats */}
-        <section className={styles.statsSection}>
+        {/* ---------------- Marquee ---------------- */}
+        <div className={styles.marquee} aria-hidden="true">
+          <div className={styles.marqueeTrack}>
+            {[0, 1].map((copy) => (
+              <ul key={copy} className={styles.marqueeList}>
+                {MARQUEE.map((item) => (
+                  <li key={`${copy}-${item}`}>
+                    {item}
+                    <span className={styles.marqueeSep}>◆</span>
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        </div>
+
+        {/* ---------------- Numbers ---------------- */}
+        <section className={styles.statsSection} aria-label="Selected metrics">
           <div className={styles.statsGrid}>
             {stats.map((stat, i) => (
-              <Reveal key={stat.label} delay={i * 80} className={styles.stat}>
+              <Reveal key={stat.label} delay={i * 90} className={styles.stat}>
                 <span className={styles.statValue}>{stat.value}</span>
                 <span className={styles.statLabel}>{stat.label}</span>
+                <span className={styles.statDetail}>{stat.detail}</span>
               </Reveal>
             ))}
           </div>
         </section>
 
-        {/* About */}
+        {/* ---------------- About ---------------- */}
         <section id="about" className={styles.section}>
-          <Reveal>
+          <Reveal className={styles.sectionHead}>
             <p className={`${styles.kicker} mono`}>01 — About</p>
             <h2 className={styles.sectionTitle}>
-              Engineer, designer at heart.
+              Final year, and a long list of things I broke first.
             </h2>
           </Reveal>
           <div className={styles.aboutBody}>
@@ -81,19 +130,43 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Skills */}
-        <section id="skills" className={styles.section}>
-          <Reveal>
-            <p className={`${styles.kicker} mono`}>02 — Skills</p>
-            <h2 className={styles.sectionTitle}>Tools I reach for.</h2>
+        {/* ---------------- Work ---------------- */}
+        <section id="work" className={styles.section}>
+          <Reveal className={styles.sectionHead}>
+            <p className={`${styles.kicker} mono`}>02 — Selected work</p>
+            <h2 className={styles.sectionTitle}>Four projects worth opening.</h2>
+            <p className={styles.sectionLede}>
+              Each of these has one detail I would happily be quizzed on.
+            </p>
           </Reveal>
+
+          <div className={styles.projectsGrid}>
+            {featured.map((project, i) => (
+              <ProjectCard key={project.title} project={project} delay={(i % 2) * 90} />
+            ))}
+          </div>
+
+          <Reveal className={styles.viewAllWrap}>
+            <Link href="/projects" className={styles.viewAll}>
+              All {projects.length} projects
+              <span aria-hidden="true">→</span>
+            </Link>
+          </Reveal>
+        </section>
+
+        {/* ---------------- Skills ---------------- */}
+        <section id="skills" className={styles.section}>
+          <Reveal className={styles.sectionHead}>
+            <p className={`${styles.kicker} mono`}>03 — Toolkit</p>
+            <h2 className={styles.sectionTitle}>What I actually reach for.</h2>
+            <p className={styles.sectionLede}>
+              Everything here appears in a repository you can open.
+            </p>
+          </Reveal>
+
           <div className={styles.skillsGrid}>
             {skillGroups.map((group, i) => (
-              <Reveal
-                key={group.title}
-                delay={i * 100}
-                className={styles.skillCard}
-              >
+              <Reveal key={group.title} delay={i * 70} className={styles.skillCard}>
                 <h3 className={styles.skillTitle}>{group.title}</h3>
                 <ul className={styles.skillList}>
                   {group.items.map((item) => (
@@ -107,73 +180,75 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Work */}
-        <section id="work" className={styles.section}>
-          <Reveal>
-            <p className={`${styles.kicker} mono`}>03 — Selected Work</p>
-            <h2 className={styles.sectionTitle}>Things I&apos;ve built.</h2>
+        {/* ---------------- Principles ---------------- */}
+        <section id="principles" className={styles.section}>
+          <Reveal className={styles.sectionHead}>
+            <p className={`${styles.kicker} mono`}>04 — How I work</p>
+            <h2 className={styles.sectionTitle}>Four habits, each with a scar.</h2>
           </Reveal>
-          <div className={styles.projectsGrid}>
-            {projects.map((project, i) => (
-              <ProjectCard
-                key={project.title}
-                project={project}
-                delay={(i % 2) * 90}
-              />
+
+          <div className={styles.principlesGrid}>
+            {principles.map((item, i) => (
+              <Reveal key={item.title} delay={i * 80} className={styles.principle}>
+                <span className={`${styles.principleNum} mono`}>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className={styles.principleTitle}>{item.title}</h3>
+                <p className={styles.principleBody}>{item.body}</p>
+              </Reveal>
             ))}
           </div>
-          <Reveal className={styles.viewAllWrap}>
-            <Link href="/projects" className={styles.viewAll}>
-              View all projects →
-            </Link>
-          </Reveal>
         </section>
 
-        {/* Experience */}
-        <section id="experience" className={styles.section}>
-          <Reveal>
-            <p className={`${styles.kicker} mono`}>04 — Experience</p>
-            <h2 className={styles.sectionTitle}>Where I&apos;ve worked.</h2>
+        {/* ---------------- Education ---------------- */}
+        <section id="education" className={styles.section}>
+          <Reveal className={styles.sectionHead}>
+            <p className={`${styles.kicker} mono`}>05 — Education</p>
+            <h2 className={styles.sectionTitle}>Where I&apos;m studying.</h2>
           </Reveal>
+
           <div className={styles.timeline}>
-            {experience.map((job, i) => (
+            {education.map((entry, i) => (
               <Reveal
-                key={`${job.company}-${i}`}
+                key={entry.institution}
                 delay={i * 80}
                 className={styles.timelineItem}
               >
                 <div className={styles.timelineMarker} aria-hidden="true" />
                 <div className={styles.timelineContent}>
                   <div className={styles.timelineHead}>
-                    <h3 className={styles.jobRole}>{job.role}</h3>
-                    <span className={`${styles.jobPeriod} mono`}>
-                      {job.period}
-                    </span>
+                    <h3 className={styles.degree}>{entry.degree}</h3>
+                    <span className={`${styles.period} mono`}>{entry.period}</span>
                   </div>
-                  <p className={styles.jobCompany}>{job.company}</p>
-                  <p className={styles.jobDesc}>{job.description}</p>
+                  <p className={styles.institution}>{entry.institution}</p>
+                  <p className={styles.eduDetail}>{entry.detail}</p>
                 </div>
               </Reveal>
             ))}
           </div>
         </section>
 
-        {/* Contact */}
+        {/* ---------------- Contact ---------------- */}
         <section id="contact" className={styles.contact}>
           <Reveal className={styles.contactInner}>
-            <p className={`${styles.kicker} mono`}>05 — Contact</p>
+            <p className={`${styles.kicker} mono`}>06 — Contact</p>
             <h2 className={styles.contactTitle}>
-              Let&apos;s build something great.
+              Hiring for 2027? Let&apos;s talk.
             </h2>
             <p className={styles.contactText}>
-              Have a project in mind, a role to fill, or just want to say hello?
-              Drop me a message below — or email me directly.
+              I&apos;m looking for a new-grad software engineering role or an internship.
+              Send a message below, or email me directly — I reply to everything.
             </p>
+
+            <div className={styles.contactActions}>
+              <DownloadCV />
+              <a href={`mailto:${profile.email}`} className={styles.emailBtn}>
+                {profile.email}
+              </a>
+            </div>
+
             <ContactForm />
-            <a href={`mailto:${profile.email}`} className={styles.emailBtn}>
-              {profile.email}
-            </a>
-            <Socials />
+            <Socials className={styles.contactSocials} />
           </Reveal>
         </section>
       </main>

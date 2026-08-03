@@ -10,7 +10,7 @@ import { projects } from "@/lib/data";
 export const metadata: Metadata = {
   title: "Projects — Manish Kumar Soni",
   description:
-    "A collection of projects built by Manish Kumar Soni, spanning AI-powered web apps, full-stack products, and mobile apps.",
+    "Projects built by Manish Kumar Soni — full-stack platforms, AI-integrated products, a chess engine, real-time graphics, and security tooling.",
 };
 
 export default function ProjectsPage() {
@@ -26,9 +26,10 @@ export default function ProjectsPage() {
             <p className={`${styles.kicker} mono`}>All Work</p>
             <h1 className={styles.title}>Projects</h1>
             <p className={styles.lead}>
-              A selection of things I&apos;ve designed and built — from
-              AI-powered web platforms to full-stack products and mobile apps.
-              Most are open source on{" "}
+              Everything I&apos;ve built that I&apos;d be happy to be questioned
+              on — full-stack platforms, AI-integrated products, a chess engine
+              written from scratch, real-time graphics, and security tooling. All
+              open source on{" "}
               <a
                 href="https://github.com/Mu0810"
                 target="_blank"

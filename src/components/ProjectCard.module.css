@@ -1,130 +1,167 @@
 .card {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--bg-elevated);
-  transition: transform var(--transition), border-color var(--transition),
-    box-shadow var(--transition);
-  overflow: hidden;
   position: relative;
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(130deg, var(--accent-glow), transparent 45%);
-  opacity: 0;
-  transition: opacity var(--transition);
-  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: clamp(1.35rem, 3vw, 1.9rem);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease),
+    border-color 0.4s var(--ease);
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
   border-color: var(--border-strong);
   box-shadow: var(--shadow);
 }
 
-.card:hover::before {
+/* A featured card gets a gradient hairline along the top edge. */
+.featured::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--brand-from), var(--brand-mid), var(--brand-to));
+  opacity: 0.9;
+}
+
+/* Cursor spotlight. Positioned from --mx/--my, set imperatively on pointermove. */
+.spotlight {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  background: radial-gradient(
+    340px circle at var(--mx, 50%) var(--my, 0px),
+    var(--accent-soft),
+    transparent 70%
+  );
+  transition: opacity 0.4s var(--ease);
+}
+
+.card:hover .spotlight,
+.card:focus-within .spotlight {
   opacity: 1;
 }
 
-.cardInner {
-  position: relative;
+.head {
   display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 1.75rem;
-}
-
-.cardTop {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-
-.year {
-  font-size: 0.8rem;
-  color: var(--text-faint);
-}
-
-.badge {
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  background: var(--accent-glow);
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .title {
-  font-size: 1.4rem;
-  margin-bottom: 0.75rem;
+  font-size: var(--step-1);
+  letter-spacing: -0.03em;
 }
 
-.desc {
+/* Makes the entire card a click target without nesting interactive elements. */
+.stretched::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.card:hover .title {
+  color: var(--accent);
+}
+
+.year {
+  font-size: 0.74rem;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.description {
   color: var(--text-muted);
-  font-size: 0.98rem;
-  margin-bottom: 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+/* The one interesting technical detail, pulled out as a quote. */
+.highlight {
+  position: relative;
+  margin-top: 0.15rem;
+  padding: 0.8rem 0 0.8rem 1rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg-inset);
+  border-radius: var(--radius-sm);
+  padding-right: 0.9rem;
+}
+
+.highlightBar {
+  position: absolute;
+  left: 0;
+  top: 0.7rem;
+  bottom: 0.7rem;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--brand-from), var(--brand-to));
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
   list-style: none;
-  margin-bottom: 1.5rem;
+  margin-top: auto;
+  padding-top: 0.4rem;
 }
 
 .tag {
-  font-size: 0.78rem;
-  padding: 0.3rem 0.7rem;
-  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  padding: 0.28rem 0.6rem;
+  border-radius: var(--radius-pill);
   background: var(--bg-subtle);
   color: var(--text-muted);
-  font-family: var(--font-mono);
+  border: 1px solid var(--border);
 }
 
-/* Pin the action row to the bottom so cards line up across the grid. */
-.actions {
+.links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-top: auto;
+  gap: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
 }
 
-.action {
+.link {
+  position: relative;
+  z-index: 2; /* sits above the stretched link */
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-muted);
-  border: 1px solid var(--border-strong);
-  padding: 0.45rem 0.9rem;
-  border-radius: 999px;
-  transition: color var(--transition), border-color var(--transition),
-    transform var(--transition);
+  transition: color 0.25s var(--ease), gap 0.25s var(--ease);
 }
 
-.action:hover {
+.link:hover {
   color: var(--accent);
-  border-color: var(--accent);
-  transform: translateY(-2px);
+  gap: 0.5rem;
 }
 
-.actionPrimary {
-  color: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+.liveLink {
+  color: var(--text);
 }
 
-.arrow {
-  font-size: 0.95rem;
-  transition: transform var(--transition);
-}
-
-.action:hover .arrow {
-  transform: translate(2px, -2px);
+.liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
 }

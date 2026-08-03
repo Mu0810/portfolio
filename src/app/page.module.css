@@ -1,136 +1,197 @@
-.main {
+/* ==========================================================================
+   Page layout
+   ========================================================================== */
+
+.section {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: clamp(4.5rem, 11vh, 8rem) var(--gutter);
 }
 
-/* ---------- Hero ---------- */
+.sectionHead {
+  max-width: 46rem;
+  margin-bottom: clamp(2rem, 5vw, 3.25rem);
+}
+
+.kicker {
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.9rem;
+}
+
+.sectionTitle {
+  font-size: var(--step-3);
+}
+
+.sectionLede {
+  margin-top: 0.9rem;
+  color: var(--text-muted);
+  font-size: var(--step-1);
+  line-height: 1.55;
+}
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+
 .hero {
-  min-height: 100svh;
+  position: relative;
+  min-height: min(94svh, 900px);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position: relative;
-  padding: 7rem 0 4rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(7rem, 16vh, 10rem) var(--gutter) clamp(3rem, 8vh, 5rem);
+  isolation: isolate;
 }
 
-.heroInner {
-  max-width: 800px;
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(2rem, 6vw, 4.5rem);
+  align-items: center;
+}
+
+.heroText {
+  min-width: 0;
 }
 
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  padding: 0.4rem 0.85rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
+  gap: 0.6rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-pill);
   background: var(--bg-elevated);
-  margin-bottom: 1.75rem;
+  border: 1px solid var(--border-strong);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 1.6rem;
+  box-shadow: var(--shadow-sm);
 }
 
 .status {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #22c55e;
-  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
-  animation: pulse 2.2s infinite;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22);
+  animation: blink 2.4s var(--ease) infinite;
 }
 
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
-  }
-  70% {
-    box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
-  }
+@keyframes blink {
+  0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
   }
 }
 
 .title {
-  font-size: clamp(2.4rem, 6.5vw, 4.6rem);
-  font-weight: 800;
-  margin-bottom: 1.5rem;
+  font-size: var(--step-4);
+  letter-spacing: -0.04em;
+  margin-bottom: 1.4rem;
+}
+
+/* The name sits above the statement, still inside the h1 so the document has a
+   single top-level heading containing the site owner's name. */
+.name {
+  display: block;
+  font-size: 0.3em;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 0.9rem;
 }
 
 .gradient {
-  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  background: linear-gradient(
+    100deg,
+    var(--brand-from),
+    var(--brand-mid) 45%,
+    var(--brand-to)
+  );
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: shift 8s var(--ease) infinite alternate;
+}
+
+@keyframes shift {
+  to {
+    background-position: 100% 0;
+  }
 }
 
 .subtitle {
-  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  max-width: 40rem;
+  font-size: var(--step-1);
   color: var(--text-muted);
-  max-width: 620px;
-  margin-bottom: 2.25rem;
+  line-height: 1.6;
 }
 
 .heroCtas {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 2.5rem;
+  gap: 0.85rem;
+  margin-top: 2.1rem;
 }
 
-.btnPrimary,
 .btnGhost {
   display: inline-flex;
   align-items: center;
-  padding: 0.85rem 1.6rem;
-  border-radius: 999px;
+  padding: 0.85rem 1.35rem;
+  border-radius: var(--radius-pill);
   font-weight: 600;
   font-size: 0.95rem;
-  transition: transform var(--transition), box-shadow var(--transition),
-    background var(--transition), border-color var(--transition);
-}
-
-.btnPrimary {
-  background: linear-gradient(120deg, var(--btn-from), var(--btn-to));
-  color: #fff;
-  box-shadow: 0 12px 30px -12px var(--accent);
-}
-
-.btnPrimary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 18px 40px -12px var(--accent);
-}
-
-.btnGhost {
-  border: 1px solid var(--border-strong);
   color: var(--text);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease),
+    background 0.25s var(--ease);
 }
 
 .btnGhost:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.heroSocials {
+  margin-top: 2rem;
+}
+
+.heroPortrait {
+  display: flex;
+  justify-content: center;
 }
 
 .scrollHint {
   position: absolute;
-  bottom: 2rem;
+  bottom: 1.6rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.15em;
+  gap: 0.45rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-faint);
 }
 
 .mouse {
-  width: 22px;
-  height: 34px;
-  border: 2px solid var(--text-faint);
+  width: 20px;
+  height: 32px;
+  border: 1.5px solid var(--border-strong);
   border-radius: 12px;
   position: relative;
 }
@@ -140,134 +201,246 @@
   position: absolute;
   top: 6px;
   left: 50%;
-  transform: translateX(-50%);
   width: 3px;
   height: 6px;
   border-radius: 2px;
-  background: var(--text-faint);
-  animation: scrollWheel 1.6s infinite;
+  background: var(--accent);
+  transform: translateX(-50%);
+  animation: wheel 1.9s var(--ease) infinite;
 }
 
-@keyframes scrollWheel {
+@keyframes wheel {
   0% {
     opacity: 0;
     transform: translate(-50%, 0);
   }
-  40% {
+  35% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, 10px);
+    transform: translate(-50%, 12px);
   }
 }
 
-/* ---------- Stats ---------- */
+@media (max-width: 900px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  /* Portrait first on narrow screens — it is the fastest way to establish
+     who this is. */
+  .heroPortrait {
+    order: -1;
+    justify-content: flex-start;
+  }
+  .scrollHint {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Marquee
+   ========================================================================== */
+
+.marquee {
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-inset);
+  padding: 0.85rem 0;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  animation: scroll 38s linear infinite;
+}
+
+.marqueeList {
+  display: flex;
+  align-items: center;
+  gap: 2.2rem;
+  padding-right: 2.2rem;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.marqueeList li {
+  display: flex;
+  align-items: center;
+  gap: 2.2rem;
+}
+
+.marqueeSep {
+  color: var(--accent);
+  font-size: 0.5rem;
+  opacity: 0.65;
+}
+
+@keyframes scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee:hover .marqueeTrack {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marqueeTrack {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   Stats
+   ========================================================================== */
+
 .statsSection {
-  padding: 2rem 0 4rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(3.5rem, 8vh, 5.5rem) var(--gutter) 0;
 }
 
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
-  padding: 2rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--bg-elevated);
-  box-shadow: var(--shadow);
 }
 
 .stat {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 0.35rem;
+  gap: 0.3rem;
+  padding: 1.5rem 1.35rem;
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
+}
+
+.stat:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-strong);
 }
 
 .statValue {
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  font-weight: 800;
-  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  font-size: clamp(2rem, 4vw, 2.7rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--brand-from), var(--brand-to));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .statLabel {
-  font-size: 0.85rem;
-  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
-/* ---------- Generic sections ---------- */
-.section {
-  padding: 5rem 0;
+.statDetail {
+  font-size: 0.8rem;
+  color: var(--text-faint);
+  line-height: 1.5;
+  margin-top: 0.2rem;
 }
 
-.kicker {
-  font-size: 0.82rem;
-  color: var(--accent);
-  letter-spacing: 0.05em;
-  margin-bottom: 0.85rem;
-}
+/* ==========================================================================
+   About
+   ========================================================================== */
 
-.sectionTitle {
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
-  font-weight: 800;
-  margin-bottom: 2.5rem;
-}
-
-/* ---------- About ---------- */
 .aboutBody {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  max-width: 720px;
-  font-size: 1.08rem;
+  gap: 1.15rem;
+  max-width: 46rem;
+  font-size: var(--step-1);
   color: var(--text-muted);
+  line-height: 1.7;
 }
 
-/* ---------- Skills ---------- */
+/* ==========================================================================
+   Projects
+   ========================================================================== */
+
+.projectsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 1.15rem;
+}
+
+.viewAllWrap {
+  margin-top: 2.25rem;
+}
+
+.viewAll {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--accent);
+  transition: gap 0.25s var(--ease);
+}
+
+.viewAll:hover {
+  gap: 0.8rem;
+}
+
+/* ==========================================================================
+   Skills
+   ========================================================================== */
+
 .skillsGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+  gap: 1rem;
 }
 
 .skillCard {
-  padding: 1.75rem;
-  border: 1px solid var(--border);
+  padding: 1.5rem 1.35rem;
   border-radius: var(--radius);
   background: var(--bg-elevated);
-  transition: transform var(--transition), border-color var(--transition);
+  border: 1px solid var(--border);
+  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
 }
 
 .skillCard:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   border-color: var(--border-strong);
 }
 
 .skillTitle {
-  font-size: 1.15rem;
-  margin-bottom: 1.1rem;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  color: var(--accent);
+  letter-spacing: 0;
 }
 
 .skillList {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem;
+  gap: 0.4rem;
   list-style: none;
 }
 
 .chip {
-  font-size: 0.85rem;
-  padding: 0.4rem 0.8rem;
-  border-radius: 999px;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.68rem;
+  border-radius: var(--radius-pill);
   background: var(--bg-subtle);
   border: 1px solid var(--border);
   color: var(--text-muted);
-  transition: color var(--transition), border-color var(--transition);
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
 }
 
 .chip:hover {
@@ -275,74 +448,87 @@
   border-color: var(--accent);
 }
 
-/* ---------- Projects ---------- */
-.projectsGrid {
+/* ==========================================================================
+   Principles
+   ========================================================================== */
+
+.principlesGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 1.15rem;
 }
 
-.viewAllWrap {
-  display: flex;
-  justify-content: center;
-  margin-top: 2.25rem;
+.principle {
+  position: relative;
+  padding: 1.7rem 1.45rem 1.5rem;
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  overflow: hidden;
 }
 
-.viewAll {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.8rem 1.6rem;
-  border-radius: 999px;
-  border: 1px solid var(--border-strong);
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--text);
-  transition: transform var(--transition), border-color var(--transition),
-    color var(--transition);
+.principle::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--brand-from), var(--brand-to));
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
 }
 
-.viewAll:hover {
-  transform: translateY(-3px);
-  border-color: var(--accent);
+.principle:hover::before {
+  opacity: 1;
+}
+
+.principleNum {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
   color: var(--accent);
 }
 
-/* ---------- Experience ---------- */
+.principleTitle {
+  font-size: var(--step-1);
+  margin: 0.6rem 0 0.7rem;
+}
+
+.principleBody {
+  color: var(--text-muted);
+  font-size: 0.93rem;
+  line-height: 1.65;
+}
+
+/* ==========================================================================
+   Education timeline
+   ========================================================================== */
+
 .timeline {
   display: flex;
   flex-direction: column;
-  gap: 0;
-  position: relative;
+  gap: 1.5rem;
+  max-width: 52rem;
 }
 
 .timelineItem {
-  display: grid;
-  grid-template-columns: 24px 1fr;
-  gap: 1.25rem;
-  padding-bottom: 2.5rem;
   position: relative;
-}
-
-.timelineItem:not(:last-child) .timelineMarker::after {
-  content: "";
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 1px;
-  height: calc(100% + 1.5rem);
-  background: var(--border-strong);
+  display: flex;
+  gap: 1.35rem;
+  padding-left: 0.25rem;
 }
 
 .timelineMarker {
-  position: relative;
-  width: 14px;
-  height: 14px;
-  margin-top: 6px;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  margin-top: 0.55rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  box-shadow: 0 0 0 4px var(--bg);
-  justify-self: center;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.timelineContent {
+  flex: 1;
+  padding-bottom: 0.25rem;
 }
 
 .timelineHead {
@@ -350,95 +536,90 @@
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
-.jobRole {
-  font-size: 1.2rem;
+.degree {
+  font-size: var(--step-1);
 }
 
-.jobPeriod {
-  font-size: 0.82rem;
+.period {
+  font-size: 0.78rem;
   color: var(--text-faint);
+  letter-spacing: 0.04em;
 }
 
-.jobCompany {
+.institution {
   color: var(--accent);
   font-weight: 600;
-  font-size: 0.95rem;
-  margin: 0.2rem 0 0.6rem;
+  font-size: 0.93rem;
+  margin-top: 0.2rem;
 }
 
-.jobDesc {
+.eduDetail {
   color: var(--text-muted);
-  font-size: 0.98rem;
-  max-width: 640px;
+  font-size: 0.93rem;
+  line-height: 1.65;
+  margin-top: 0.55rem;
 }
 
-/* ---------- Contact ---------- */
+/* ==========================================================================
+   Contact
+   ========================================================================== */
+
 .contact {
-  padding: 6rem 0;
-  text-align: center;
+  position: relative;
+  padding: clamp(4.5rem, 11vh, 8rem) var(--gutter);
+  border-top: 1px solid var(--border);
+  background:
+    radial-gradient(70% 60% at 50% 0%, var(--accent-glow), transparent 70%),
+    var(--bg-inset);
 }
 
 .contactInner {
-  max-width: 620px;
+  max-width: 40rem;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center;
 }
 
 .contactTitle {
-  font-size: clamp(2rem, 5vw, 3.2rem);
-  font-weight: 800;
-  margin: 0.5rem 0 1rem;
+  font-size: var(--step-3);
+  margin-bottom: 1rem;
 }
 
 .contactText {
   color: var(--text-muted);
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
+  font-size: var(--step-1);
+  line-height: 1.65;
+}
+
+.contactActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  justify-content: center;
+  margin: 2rem 0 2.5rem;
 }
 
 .emailBtn {
-  font-size: clamp(1.1rem, 3vw, 1.5rem);
-  font-weight: 700;
-  padding: 0.9rem 2rem;
-  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.85rem 1.35rem;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 0.95rem;
+  font-family: var(--font-mono);
+  background: var(--bg-elevated);
   border: 1px solid var(--border-strong);
-  margin-bottom: 2rem;
-  transition: transform var(--transition), border-color var(--transition),
-    color var(--transition);
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease);
 }
 
 .emailBtn:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: var(--accent);
-  color: var(--accent);
 }
 
-/* ---------- Responsive ---------- */
-@media (max-width: 860px) {
-  .statsGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.75rem;
-  }
-  .skillsGrid {
-    grid-template-columns: 1fr;
-  }
-  .projectsGrid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 520px) {
-  .section {
-    padding: 3.5rem 0;
-  }
-  .btnPrimary,
-  .btnGhost {
-    flex: 1;
-    justify-content: center;
-  }
+.contactSocials {
+  margin-top: 2rem;
+  justify-content: center;
 }
