@@ -9,9 +9,11 @@
   border-bottom: 1px solid transparent;
 }
 
+/* Solid, not frosted. At 72% opacity the display serif scrolled through the
+   bar and read as a smear; and a blurred translucent bar is its own template
+   cliché. A flat rule is what a printed page would do. */
 .scrolled {
-  background: color-mix(in srgb, var(--paper) 72%, transparent);
-  backdrop-filter: blur(14px);
+  background: var(--paper);
   border-bottom-color: var(--rule);
 }
 
@@ -25,20 +27,16 @@
   gap: 1rem;
 }
 
+/* Masthead: set in the display serif so the bar speaks the same language as
+   the page. A single accent full stop, rather than a dot *and* a period —
+   two marks around four letters was fussy. */
 .brand {
   display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 700;
-  font-size: 1.15rem;
-  letter-spacing: -0.02em;
-}
-
-.brandDot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--accent);
+  align-items: baseline;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.4rem;
+  letter-spacing: -0.01em;
 }
 
 .brandAccent {
@@ -65,8 +63,7 @@
   left: 0;
   bottom: -6px;
   width: 0;
-  height: 2px;
-  border-radius: 2px;
+  height: 1px;
   background: var(--accent);
   transition: width 0.25s var(--ease);
 }
@@ -92,7 +89,7 @@
   width: 40px;
   height: 40px;
   border: 1px solid var(--rule);
-  border-radius: 10px;
+  border-radius: var(--radius);
   align-items: center;
   justify-content: center;
 }
@@ -119,8 +116,7 @@
   flex-direction: column;
   overflow: hidden;
   max-height: 0;
-  background: color-mix(in srgb, var(--paper) 92%, transparent);
-  backdrop-filter: blur(14px);
+  background: var(--paper);
   border-bottom: 1px solid transparent;
   transition: max-height 0.4s var(--ease), border-color 0.25s var(--ease);
 }
