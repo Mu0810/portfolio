@@ -36,14 +36,14 @@ function resolveSiteUrl(): URL {
 
 export const metadata: Metadata = {
   metadataBase: resolveSiteUrl(),
-  title: "Manish Kumar Soni — Software Developer",
+  title: "Manish Kumar Soni — Software Engineer",
   description:
-    "Portfolio of Manish Kumar Soni, a software developer building AI-powered, full-stack web applications with React, Next.js, and TypeScript.",
+    "Portfolio of Manish Kumar Soni — a final-year B.Tech student and full-stack engineer building typed, tested systems with Next.js, Node, PostgreSQL and applied AI. Open to New Grad 2027 roles.",
   keywords: [
     "Manish Kumar Soni",
-    "software developer",
+    "software engineer",
     "full-stack developer",
-    "AI developer",
+    "new grad 2027",
     "portfolio",
     "react",
     "next.js",
@@ -51,18 +51,18 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Manish Kumar Soni" }],
   openGraph: {
-    title: "Manish Kumar Soni — Software Developer",
+    title: "Manish Kumar Soni — Software Engineer",
     description:
-      "Software developer building AI-powered, full-stack web applications with React, Next.js, and TypeScript.",
+      "Full-stack engineer building typed, tested systems with Next.js, Node and PostgreSQL. Open to New Grad 2027 roles.",
     url: "/",
     siteName: "Manish Kumar Soni",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Manish Kumar Soni — Software Developer",
+    title: "Manish Kumar Soni — Software Engineer",
     description:
-      "Software developer building AI-powered, full-stack web applications with React, Next.js, and TypeScript.",
+      "Full-stack engineer building typed, tested systems with Next.js, Node and PostgreSQL. Open to New Grad 2027 roles.",
   },
 };
 

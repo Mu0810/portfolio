@@ -76,6 +76,9 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: var(--bg-subtle);
+  /* An inner hairline keeps the card's edge legible in light mode, where the
+     surface and the page background are close in value. */
+  border: 1px solid var(--border-strong);
   box-shadow: var(--shadow-lg);
 }
 

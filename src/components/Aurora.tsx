@@ -79,7 +79,14 @@ export default function Aurora() {
       ctx!.clearRect(0, 0, width, height);
       ctx!.globalCompositeOperation = "lighter";
 
-      const alpha = isDark() ? 0.4 : 0.26;
+      // Light and dark need very different treatment. "lighter" compositing adds
+      // colour, so on a near-white background the same alpha that reads as a
+      // moody glow in dark floods the page pink. Light mode therefore gets a
+      // much lower alpha and a desaturated, paler hue.
+      const dark = isDark();
+      const alpha = dark ? 0.38 : 0.1;
+      const sat = dark ? 92 : 70;
+      const lum = dark ? 62 : 72;
 
       for (const b of blobs) {
         b.x += b.vx;
@@ -100,8 +107,8 @@ export default function Aurora() {
         const r = b.r * pulse;
 
         const g = ctx!.createRadialGradient(b.x, b.y, 0, b.x, b.y, r);
-        g.addColorStop(0, `hsla(${b.hue}, 92%, 62%, ${alpha})`);
-        g.addColorStop(0.55, `hsla(${b.hue + 12}, 88%, 56%, ${alpha * 0.35})`);
+        g.addColorStop(0, `hsla(${b.hue}, ${sat}%, ${lum}%, ${alpha})`);
+        g.addColorStop(0.55, `hsla(${b.hue + 12}, ${sat - 4}%, ${lum - 6}%, ${alpha * 0.35})`);
         g.addColorStop(1, "hsla(0, 0%, 0%, 0)");
 
         ctx!.fillStyle = g;
