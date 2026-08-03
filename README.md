@@ -4,18 +4,57 @@ A modern, animated personal portfolio built with **Next.js 16**, **React 19**, a
 
 ## Features
 
-- **Hero** with animated status pill, gradient headline, location, and scroll cue
-- **Stats**, **About**, **Skills**, **Selected Work**, and **Experience** timeline sections
-- Dedicated **/projects** page listing all work
+- **Hero** with a portrait, animated aurora backdrop, availability pill, and gradient headline
+- **Download CV** button in the hero, nav, and contact section — a plain `<a download>`, so
+  middle-click and "Save link as" both work
+- **Numbers**, **About**, **Selected work**, **Toolkit**, **How I work**, and **Education** sections
+- Dedicated **/projects** page listing every project
+- Project cards with a cursor-tracking spotlight and a pull-quote for the one interesting
+  technical detail in each
 - **Contact** section with a working contact form (+ direct email fallback) and social links
 - Dark / light theme toggle (persisted to `localStorage`, respects OS preference, no flash on load)
 - Scroll-reveal animations via `IntersectionObserver`
 - Fully responsive with a mobile nav menu
-- Respects `prefers-reduced-motion`
+- Respects `prefers-reduced-motion` throughout — the aurora canvas never starts, the marquee
+  stops, and reveals resolve immediately
+- **Zero runtime dependencies** beyond React and Next. No CSS framework, no animation library,
+  no icon package.
+
+## Adding your photo
+
+The hero renders a photo if one exists and a designed monogram if not, so the site looks
+finished either way. To use a photo:
+
+1. Save it as **`public/profile.jpg`** (`.jpeg`, `.png` and `.webp` also work)
+2. Rebuild — that's it
+
+A portrait crop around 800×1000 or larger works best; it is displayed at a 4:5 aspect ratio and
+focused slightly above centre so a head-and-shoulders shot frames well. The check happens on the
+server in [`src/components/Avatar.tsx`](src/components/Avatar.tsx), so a missing file never
+produces a broken-image flash.
+
+## The CV
+
+The downloadable PDF lives at [`public/manish-kumar-soni-cv.pdf`](public/manish-kumar-soni-cv.pdf)
+and is wired up through `profile.resumeUrl` in `src/lib/data.ts`.
+
+**This copy deliberately has no phone number on it.** The site is public, so anything published
+here is scraped. Email, LinkedIn and GitHub are all still on it, which is enough for a recruiter to
+make contact. Keep the full version — phone included — for direct applications.
 
 ## Customize
 
-All content lives in [`src/lib/data.ts`](src/lib/data.ts) — edit your name, tagline, socials, skills, projects, and experience there. Theme colors and design tokens are defined in [`src/app/globals.css`](src/app/globals.css).
+All content lives in [`src/lib/data.ts`](src/lib/data.ts). Design tokens — colour, type scale,
+easing, radii — are at the top of [`src/app/globals.css`](src/app/globals.css); changing
+`--brand-from` / `--brand-mid` / `--brand-to` restyles the whole site.
+
+### A note on content
+
+Every claim in `data.ts` was checked against the source code of the repository it describes,
+rather than that repository's README. An earlier version of this site listed skills and an
+employment history the code did not support, and described one project as a working app when it
+was an unmodified project template. Worth keeping to: nothing goes on here that wouldn't survive
+an interviewer opening the repo mid-conversation.
 
 ## Getting Started
 

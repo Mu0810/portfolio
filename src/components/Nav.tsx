@@ -3,15 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
+import DownloadCV from "./DownloadCV";
 import styles from "./Nav.module.css";
 import { profile } from "@/lib/data";
 
 const links = [
   { label: "About", href: "/#about" },
-  { label: "Skills", href: "/#skills" },
   { label: "Work", href: "/#work" },
-  { label: "Projects", href: "/projects" },
-  { label: "Experience", href: "/#experience" },
+  { label: "Skills", href: "/#skills" },
+  { label: "Education", href: "/#education" },
+  { label: "All projects", href: "/projects" },
   { label: "Contact", href: "/#contact" },
 ];
 
@@ -59,6 +60,7 @@ export default function Nav() {
         </ul>
 
         <div className={styles.actions}>
+          <DownloadCV variant="quiet" className={styles.navCv} />
           <ThemeToggle />
           <button
             ref={menuBtnRef}
@@ -88,6 +90,7 @@ export default function Nav() {
             {link.label}
           </Link>
         ))}
+        <DownloadCV variant="quiet" className={styles.mobileCv} />
       </div>
     </header>
   );

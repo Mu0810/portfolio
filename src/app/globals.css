@@ -1,55 +1,85 @@
+/* ==========================================================================
+   Design system
+   Zero runtime dependencies — everything here is hand-written CSS.
+   ========================================================================== */
+
 :root {
   --font-sans: system-ui, -apple-system, sans-serif;
   --font-mono: ui-monospace, monospace;
 
-  --max-width: 1100px;
+  --max-width: 1180px;
+  --gutter: clamp(1.25rem, 5vw, 3rem);
+
+  --radius-lg: 24px;
   --radius: 16px;
   --radius-sm: 10px;
+  --radius-pill: 999px;
 
+  /* One easing curve everywhere, so motion feels like one system. */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --transition: 0.35s var(--ease);
 
-  /* Button gradient — theme-independent and kept dark enough that white
-     label text stays ≥ 4.5:1 (WCAG 1.4.3) in both light and dark modes. */
-  --btn-from: #6d3bf5;
-  --btn-to: #c62a76;
+  /* Fluid type scale. clamp() means no breakpoint jumps in headings. */
+  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.08rem);
+  --step-1: clamp(1.2rem, 1.1rem + 0.5vw, 1.45rem);
+  --step-2: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --step-3: clamp(2rem, 1.6rem + 2vw, 3rem);
+  --step-4: clamp(2.6rem, 1.8rem + 4vw, 4.75rem);
+
+  /* Brand gradient. Kept dark enough that white label text stays ≥ 4.5:1
+     (WCAG 1.4.3) against it in both themes. */
+  --brand-from: #6d3bf5;
+  --brand-mid: #9333ea;
+  --brand-to: #c62a76;
 }
 
-/* Light theme */
 html[data-theme="light"] {
-  --bg: #f7f7fb;
+  --bg: #f6f6fa;
   --bg-elevated: #ffffff;
-  --bg-subtle: #eef0f6;
-  --text: #16181d;
-  --text-muted: #565c6b;
-  --text-faint: #646b78;
-  --border: rgba(16, 18, 27, 0.09);
-  --border-strong: rgba(16, 18, 27, 0.16);
+  --bg-subtle: #eceef5;
+  --bg-inset: #f1f2f8;
+  --text: #12141a;
+  --text-muted: #4f5563;
+  --text-faint: #6b7280;
+  --border: rgba(16, 18, 27, 0.1);
+  --border-strong: rgba(16, 18, 27, 0.18);
   --accent: #6d3bf5;
   --accent-2: #d63384;
-  --accent-glow: rgba(109, 59, 245, 0.18);
-  --shadow: 0 20px 50px -24px rgba(23, 24, 33, 0.28);
+  --accent-soft: rgba(109, 59, 245, 0.1);
+  --accent-glow: rgba(109, 59, 245, 0.16);
+  --shadow-sm: 0 2px 8px -2px rgba(23, 24, 33, 0.12);
+  --shadow: 0 18px 48px -22px rgba(23, 24, 33, 0.3);
+  --shadow-lg: 0 40px 80px -32px rgba(23, 24, 33, 0.34);
+  --grain-opacity: 0.028;
   color-scheme: light;
 }
 
-/* Dark theme */
 html[data-theme="dark"] {
-  --bg: #08090d;
-  --bg-elevated: #111319;
-  --bg-subtle: #171a22;
-  --text: #f2f4fa;
-  --text-muted: #a4abbb;
-  --text-faint: #8d95a4;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.16);
+  --bg: #07080c;
+  --bg-elevated: #10121a;
+  --bg-subtle: #161923;
+  --bg-inset: #0c0e14;
+  --text: #f3f5fb;
+  --text-muted: #a7aebe;
+  --text-faint: #838b9c;
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.18);
   --accent: #a78bfa;
   --accent-2: #f472b6;
-  --accent-glow: rgba(167, 139, 250, 0.22);
-  --shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.7);
+  --accent-soft: rgba(167, 139, 250, 0.12);
+  --accent-glow: rgba(167, 139, 250, 0.2);
+  --shadow-sm: 0 2px 10px -2px rgba(0, 0, 0, 0.5);
+  --shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.75);
+  --shadow-lg: 0 48px 100px -36px rgba(0, 0, 0, 0.85);
+  --grain-opacity: 0.05;
   color-scheme: dark;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -57,14 +87,16 @@ html[data-theme="dark"] {
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 90px;
+  scroll-padding-top: 96px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   font-family: var(--font-sans);
+  font-size: var(--step-0);
   background: var(--bg);
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -77,17 +109,21 @@ a {
 }
 
 button {
-  font-family: inherit;
+  font: inherit;
   cursor: pointer;
   border: none;
   background: none;
   color: inherit;
 }
 
-/* Visible keyboard focus indicator (WCAG 2.4.7) */
+img {
+  max-width: 100%;
+  display: block;
+}
+
 :focus-visible {
   outline: 3px solid var(--accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
   border-radius: 6px;
 }
 
@@ -96,7 +132,27 @@ button {
   color: #fff;
 }
 
-/* Visually hidden but available to assistive tech. */
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* ---------- utilities ---------- */
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-ligatures: none;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -109,7 +165,6 @@ button {
   border: 0;
 }
 
-/* Skip link — hidden until focused, then pinned to the top-left. */
 .skip-link {
   position: absolute;
   left: 1rem;
@@ -128,36 +183,23 @@ button {
   top: 1rem;
 }
 
-h1,
-h2,
-h3 {
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  font-weight: 700;
-}
-
-.mono {
-  font-family: var(--font-mono);
-}
-
-/* Ambient background glow */
-body::before {
+/* Film grain over the whole page. Pure SVG, so no image request. */
+body::after {
   content: "";
   position: fixed;
-  inset: 0;
-  z-index: -1;
-  background:
-    radial-gradient(600px circle at 15% 10%, var(--accent-glow), transparent 55%),
-    radial-gradient(500px circle at 85% 90%, var(--accent-glow), transparent 55%);
-  opacity: 0.9;
+  inset: -50%;
+  z-index: 1;
   pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Scroll-reveal utility */
+/* ---------- scroll reveal ---------- */
+
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transform: translateY(24px);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
   will-change: opacity, transform;
 }
 
@@ -166,17 +208,25 @@ body::before {
   transform: none;
 }
 
+/* ---------- reduced motion ----------
+   Honour the preference properly: kill transforms and long transitions, but
+   never hide content that only appears after an animation. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
+
   .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
-  * {
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
 }
