@@ -1,79 +1,68 @@
 /* ==========================================================================
-   Design system
-   Zero runtime dependencies — everything here is hand-written CSS.
+   Design system — editorial, print-derived.
+
+   Deliberate constraints, because the previous version read as generated:
+     - No gradients. Anywhere. Not in text, not on buttons, not behind the hero.
+     - No glows, no neon, no pulsing indicators.
+     - One accent colour, used sparingly and never decoratively.
+     - Structure comes from hairline rules and negative space, not from cards
+       floating on shadows.
+     - Warm paper and ink rather than neutral grey, so the palette reads as
+       chosen rather than defaulted.
    ========================================================================== */
 
 :root {
+  --font-display: Georgia, "Times New Roman", serif;
   --font-sans: system-ui, -apple-system, sans-serif;
   --font-mono: ui-monospace, monospace;
 
-  --max-width: 1180px;
-  --gutter: clamp(1.25rem, 5vw, 3rem);
+  --measure: 1240px;
+  --gutter: clamp(1.25rem, 4vw, 3.5rem);
 
-  --radius-lg: 24px;
-  --radius: 16px;
-  --radius-sm: 10px;
-  --radius-pill: 999px;
+  /* Print-ish radii: almost square. Rounded corners were part of the problem. */
+  --radius: 3px;
+  --radius-sm: 2px;
 
-  /* One easing curve everywhere, so motion feels like one system. */
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --transition: 0.35s var(--ease);
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 
-  /* Fluid type scale. clamp() means no breakpoint jumps in headings. */
-  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
-  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.08rem);
-  --step-1: clamp(1.2rem, 1.1rem + 0.5vw, 1.45rem);
-  --step-2: clamp(1.5rem, 1.3rem + 1vw, 2rem);
-  --step-3: clamp(2rem, 1.6rem + 2vw, 3rem);
-  --step-4: clamp(2.6rem, 1.8rem + 4vw, 4.75rem);
-
-  /* Brand gradient. Kept dark enough that white label text stays ≥ 4.5:1
-     (WCAG 1.4.3) against it in both themes. */
-  --brand-from: #6d3bf5;
-  --brand-mid: #9333ea;
-  --brand-to: #c62a76;
+  --step--2: 0.72rem;
+  --step--1: clamp(0.8rem, 0.78rem + 0.1vw, 0.86rem);
+  --step-0: clamp(1rem, 0.97rem + 0.15vw, 1.06rem);
+  --step-1: clamp(1.16rem, 1.1rem + 0.3vw, 1.34rem);
+  --step-2: clamp(1.5rem, 1.3rem + 0.9vw, 2.05rem);
+  --step-3: clamp(2.1rem, 1.7rem + 1.9vw, 3.2rem);
+  --step-4: clamp(2.9rem, 1.9rem + 5vw, 6rem);
 }
 
+/* Warm paper, ink, and a single burnt-orange accent borrowed from print
+   signal marks. Nothing here is violet. */
 html[data-theme="light"] {
-  --bg: #f6f6fa;
-  --bg-elevated: #ffffff;
-  --bg-subtle: #eceef5;
-  --bg-inset: #f1f2f8;
-  --text: #12141a;
-  --text-muted: #4f5563;
-  --text-faint: #6b7280;
-  --border: rgba(16, 18, 27, 0.1);
-  --border-strong: rgba(16, 18, 27, 0.18);
-  --accent: #6d3bf5;
-  --accent-2: #d63384;
-  --accent-soft: rgba(109, 59, 245, 0.1);
-  --accent-glow: rgba(109, 59, 245, 0.16);
-  --shadow-sm: 0 2px 8px -2px rgba(23, 24, 33, 0.12);
-  --shadow: 0 18px 48px -22px rgba(23, 24, 33, 0.3);
-  --shadow-lg: 0 40px 80px -32px rgba(23, 24, 33, 0.34);
-  --grain-opacity: 0.028;
+  --paper: #f7f4ee;
+  --paper-2: #f1ede5;
+  --paper-3: #e9e4da;
+  --ink: #17150f;
+  --ink-2: #46423a;
+  --ink-3: #6f6a5f;
+  --rule: #d9d3c6;
+  --rule-strong: #b9b1a1;
+  --accent: #b03a10;
+  --accent-ink: #ffffff;
+  --grain: 0.035;
   color-scheme: light;
 }
 
 html[data-theme="dark"] {
-  --bg: #07080c;
-  --bg-elevated: #10121a;
-  --bg-subtle: #161923;
-  --bg-inset: #0c0e14;
-  --text: #f3f5fb;
-  --text-muted: #a7aebe;
-  --text-faint: #838b9c;
-  --border: rgba(255, 255, 255, 0.09);
-  --border-strong: rgba(255, 255, 255, 0.18);
-  --accent: #a78bfa;
-  --accent-2: #f472b6;
-  --accent-soft: rgba(167, 139, 250, 0.12);
-  --accent-glow: rgba(167, 139, 250, 0.2);
-  --shadow-sm: 0 2px 10px -2px rgba(0, 0, 0, 0.5);
-  --shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.75);
-  --shadow-lg: 0 48px 100px -36px rgba(0, 0, 0, 0.85);
-  --grain-opacity: 0.05;
+  --paper: #100f0d;
+  --paper-2: #171613;
+  --paper-3: #1f1d19;
+  --ink: #f2efe7;
+  --ink-2: #b0aa9e;
+  --ink-3: #837d71;
+  --rule: #2a2721;
+  --rule-strong: #443f36;
+  --accent: #e2703a;
+  --accent-ink: #17150f;
+  --grain: 0.055;
   color-scheme: dark;
 }
 
@@ -87,20 +76,20 @@ html[data-theme="dark"] {
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 96px;
+  scroll-padding-top: 88px;
   -webkit-text-size-adjust: 100%;
 }
 
 body {
   font-family: var(--font-sans);
   font-size: var(--step-0);
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.65;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  transition: background var(--transition), color var(--transition);
+  font-feature-settings: "kern" 1;
 }
 
 a {
@@ -122,23 +111,23 @@ img {
 }
 
 :focus-visible {
-  outline: 3px solid var(--accent);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 6px;
 }
 
 ::selection {
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-ink);
 }
 
+/* Display type: serif, tight, and allowed to be large. */
 h1,
 h2,
-h3,
-h4 {
-  line-height: 1.08;
-  letter-spacing: -0.025em;
-  font-weight: 700;
+h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
@@ -151,6 +140,7 @@ p {
 .mono {
   font-family: var(--font-mono);
   font-variant-ligatures: none;
+  font-feature-settings: "tnum" 1; /* tabular figures, so numbers align */
 }
 
 .sr-only {
@@ -171,10 +161,8 @@ p {
   top: -100px;
   z-index: 200;
   padding: 0.7rem 1.1rem;
-  border-radius: var(--radius-sm);
-  background: var(--bg-elevated);
-  color: var(--text);
-  border: 1px solid var(--border-strong);
+  background: var(--ink);
+  color: var(--paper);
   font-weight: 600;
   transition: top 0.2s var(--ease);
 }
@@ -183,24 +171,25 @@ p {
   top: 1rem;
 }
 
-/* Film grain over the whole page. Pure SVG, so no image request. */
+/* Paper grain. The only texture on the page, and it is static — no animation,
+   no blur, no coloured light. */
 body::after {
   content: "";
   position: fixed;
   inset: -50%;
   z-index: 1;
   pointer-events: none;
-  opacity: var(--grain-opacity);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: var(--grain);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ---------- scroll reveal ---------- */
-
+/* ---------- scroll reveal ----------
+   Reduced to a short fade with a small rise. The previous 24px slide on every
+   block was part of what made the page feel machine-assembled. */
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
-  will-change: opacity, transform;
+  transform: translateY(10px);
+  transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
 }
 
 .reveal.is-visible {
@@ -208,9 +197,6 @@ body::after {
   transform: none;
 }
 
-/* ---------- reduced motion ----------
-   Honour the preference properly: kill transforms and long transitions, but
-   never hide content that only appears after an animation. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

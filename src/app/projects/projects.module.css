@@ -1,5 +1,5 @@
 .main {
-  max-width: var(--max-width);
+  max-width: var(--measure);
   margin: 0 auto;
   padding: 0 1.5rem;
 }
@@ -11,9 +11,9 @@
 .back {
   display: inline-block;
   font-size: 0.9rem;
-  color: var(--text-muted);
+  color: var(--ink-2);
   margin-bottom: 2rem;
-  transition: color var(--transition);
+  transition: color 0.25s var(--ease);
 }
 
 .back:hover {
@@ -35,7 +35,7 @@
 
 .lead {
   font-size: 1.1rem;
-  color: var(--text-muted);
+  color: var(--ink-2);
   max-width: 640px;
 }
 
@@ -53,8 +53,8 @@
 }
 
 .footerLink {
-  color: var(--text-muted);
-  transition: color var(--transition);
+  color: var(--ink-2);
+  transition: color 0.25s var(--ease);
 }
 
 .footerLink:hover {
@@ -65,4 +65,11 @@
   .grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Index list replaces the former card grid. */
+.index {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }

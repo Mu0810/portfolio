@@ -34,11 +34,7 @@ export default function Avatar() {
   const src = findPhoto();
 
   return (
-    <div className={styles.frame}>
-      {/* Rotating conic ring behind the portrait. */}
-      <span className={styles.ring} aria-hidden="true" />
-      <span className={styles.glow} aria-hidden="true" />
-
+    <figure className={styles.frame}>
       <div className={styles.inner}>
         {src ? (
           <Image
@@ -55,12 +51,9 @@ export default function Avatar() {
           </div>
         )}
       </div>
-
-      {/* Small status chip pinned to the portrait. */}
-      <span className={styles.badge}>
-        <span className={styles.dot} aria-hidden="true" />
-        Open to work
-      </span>
-    </div>
+      <figcaption className={styles.caption}>
+        {src ? profile.name : "Photograph pending"}
+      </figcaption>
+    </figure>
   );
 }

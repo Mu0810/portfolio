@@ -1,24 +1,24 @@
 .footer {
-  max-width: var(--max-width);
+  max-width: var(--measure);
   margin: 0 auto;
   padding: 2.5rem 1.5rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--rule);
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   justify-content: space-between;
   align-items: center;
   font-size: 0.85rem;
-  color: var(--text-faint);
+  color: var(--ink-3);
 }
 
 .note {
-  color: var(--text-faint);
+  color: var(--ink-3);
 }
 
 .footer a {
-  color: var(--text-muted);
-  transition: color var(--transition);
+  color: var(--ink-2);
+  transition: color 0.25s var(--ease);
 }
 
 .footer a:hover {
