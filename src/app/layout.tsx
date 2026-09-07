@@ -30,15 +30,29 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
+/**
+ * The canonical production origin, as a literal.
+ *
+ * A social card is scraped once and cached by the platform, so the absolute URL
+ * it carries has to be one that keeps working. Vercel's `VERCEL_URL` is a
+ * *different* hostname on every single deployment, which is why og:url used to
+ * resolve to an ephemeral build hostname instead of the real site — so that var
+ * is deliberately not in the chain below.
+ *
+ * Change this line when the site moves (a custom domain, or a renamed Vercel
+ * project). `NEXT_PUBLIC_SITE_URL` overrides it without a code change.
+ */
+const CANONICAL_SITE_URL = "https://protfolio-tau-taupe.vercel.app";
+
 // Resolve the canonical site URL for absolute OG/Twitter/canonical links.
-// Accepts NEXT_PUBLIC_SITE_URL with or without a protocol, falls back to
-// Vercel's own env vars, and never throws — a bad value must not break the build.
+// Accepts NEXT_PUBLIC_SITE_URL with or without a protocol, falls back to the
+// Vercel-provided *production* domain and then to the literal above, and never
+// throws — a bad value must not break the build.
 function resolveSiteUrl(): URL {
-  const fallback = new URL("https://example.com");
+  const fallback = new URL(CANONICAL_SITE_URL);
   const raw =
     process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
-    process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim() ||
-    process.env.VERCEL_URL?.trim();
+    process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
 
   if (!raw) return fallback;
 
@@ -66,6 +80,9 @@ export const metadata: Metadata = {
     "typescript",
   ],
   authors: [{ name: "Manish Kumar Soni" }],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "Manish Kumar Soni — Software Engineer",
     description:

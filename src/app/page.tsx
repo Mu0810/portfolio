@@ -1,10 +1,13 @@
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Reveal from "@/components/Reveal";
-import Avatar from "@/components/Avatar";
+import Masthead from "@/components/Masthead";
+import ScrollProgress from "@/components/ScrollProgress";
+import SectionNo from "@/components/SectionNo";
+import FlipStat from "@/components/FlipStat";
+import WorkGallery from "@/components/WorkGallery";
 import DownloadCV from "@/components/DownloadCV";
 import ContactForm from "@/components/ContactForm";
-import ProjectRow from "@/components/ProjectRow";
 import Footer from "@/components/Footer";
 import styles from "./page.module.css";
 import {
@@ -17,80 +20,37 @@ import {
   principles,
 } from "@/lib/data";
 
+/**
+ * The kinetic broadsheet.
+ *
+ * Same editorial constraints as before — warm paper and ink, one accent, hairline
+ * rules, no gradients, no glows, no cards floating on shadows. What is new is
+ * that the sheet moves: the nameplate parallaxes, folio numerals counter-scroll,
+ * the work section turns sideways under scroll, the toolkit runs as headlines,
+ * and the figures land like a split-flap board.
+ *
+ * Every one of those is gated on `prefers-reduced-motion` and collapses to the
+ * static editorial layout, which is the honest fallback rather than a lesser one.
+ */
 export default function Home() {
   const featured = projects.filter((p) => p.featured);
 
   return (
     <>
+      <ScrollProgress />
       <Nav />
+
       <main id="top">
-        {/* ---------------- Hero ----------------
-            Asymmetric: copy in a wide column, portrait and metadata in a
-            narrower one separated by a rule. No backdrop effect. */}
-        <section className={styles.hero}>
-          <div className={styles.heroMain}>
-            <p className={`${styles.available} mono`}>{profile.availability}</p>
+        <Masthead />
 
-            <h1 className={styles.title}>
-              <span className={styles.titleLine}>I build full-stack systems,</span>
-              <span className={styles.titleLine}>
-                and I sweat the parts that <em>fail quietly</em>.
-              </span>
-            </h1>
-
-            <p className={styles.subtitle}>{profile.tagline}</p>
-
-            <div className={styles.heroCtas}>
-              <DownloadCV />
-              <a href="#work" className={styles.btnQuiet}>
-                See the work
-              </a>
-            </div>
-          </div>
-
-          <aside className={styles.heroAside}>
-            <Avatar />
-
-            <dl className={styles.vitals}>
-              <div className={styles.vital}>
-                <dt className={`${styles.vitalKey} mono`}>Name</dt>
-                <dd className={styles.vitalVal}>{profile.name}</dd>
-              </div>
-              <div className={styles.vital}>
-                <dt className={`${styles.vitalKey} mono`}>Based in</dt>
-                <dd className={styles.vitalVal}>{profile.location}</dd>
-              </div>
-              <div className={styles.vital}>
-                <dt className={`${styles.vitalKey} mono`}>Studying</dt>
-                <dd className={styles.vitalVal}>B.Tech CSE, VIT Bhopal · 2027</dd>
-              </div>
-              {profile.socials.map((s) => (
-                <div className={styles.vital} key={s.label}>
-                  <dt className={`${styles.vitalKey} mono`}>{s.label}</dt>
-                  <dd className={styles.vitalVal}>
-                    <a
-                      href={s.href}
-                      target={s.href.startsWith("mailto:") ? undefined : "_blank"}
-                      rel="noopener noreferrer"
-                      className={styles.vitalLink}
-                    >
-                      {s.handle}
-                    </a>
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </aside>
-        </section>
-
-        {/* ---------------- Numbers ----------------
-            A rule-separated strip, not a grid of cards with big gradient
-            figures. Each number is a claim you can go and check. */}
+        {/* ---------------- Figures ----------------
+            A rule-separated strip. Each number is a claim you can go and check;
+            each one lands like a flap board when it scrolls into view. */}
         <section className={styles.figures} aria-label="Selected metrics">
           <div className={styles.figuresInner}>
             {stats.map((stat) => (
               <div className={styles.figure} key={stat.label}>
-                <span className={`${styles.figureValue} mono`}>{stat.value}</span>
+                <FlipStat value={stat.value} />
                 <span className={styles.figureLabel}>{stat.label}</span>
                 <span className={styles.figureDetail}>{stat.detail}</span>
               </div>
@@ -101,10 +61,10 @@ export default function Home() {
         {/* ---------------- About ---------------- */}
         <section id="about" className={styles.section}>
           <div className={styles.twoCol}>
-            <Reveal className={styles.colLabel}>
-              <span className={`${styles.sectionNo} mono`}>01</span>
+            <div className={styles.colLabel}>
+              <SectionNo no="01" />
               <h2 className={styles.sectionTitle}>About</h2>
-            </Reveal>
+            </div>
             <div className={styles.prose}>
               {about.map((para, i) => (
                 <Reveal key={i} delay={i * 70} as="p">
@@ -115,40 +75,50 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ---------------- Work ---------------- */}
-        <section id="work" className={styles.section}>
-          <div className={styles.twoCol}>
-            <Reveal className={styles.colLabel}>
-              <span className={`${styles.sectionNo} mono`}>02</span>
-              <h2 className={styles.sectionTitle}>Selected work</h2>
-              <p className={styles.colNote}>
-                Each one has a detail I would happily be quizzed on.
+        {/* ---------------- Work ----------------
+            The centrepiece. Full-bleed, because a spread that stops at the text
+            measure is not a spread. The heading stays in the normal column so
+            the section is still announced and linkable as one. */}
+        <section id="work" className={styles.workSection}>
+          <div className={styles.workHead}>
+            <div className={styles.workHeadInner}>
+              <div className={styles.colLabel}>
+                <SectionNo no="02" />
+                <h2 className={styles.sectionTitle}>Selected work</h2>
+              </div>
+              <p className={styles.workNote}>
+                Each one has a detail I would happily be quizzed on. Four spreads —
+                the arrows turn the page.
               </p>
-            </Reveal>
-
-            <div>
-              <ol className={styles.index}>
-                {featured.map((project, i) => (
-                  <ProjectRow key={project.title} project={project} index={i} />
-                ))}
-              </ol>
-              <Link href="/projects" className={styles.more}>
-                Full index — all {projects.length} projects
-              </Link>
             </div>
+          </div>
+
+          <WorkGallery projects={featured} no="02" label="Selected work" />
+
+          <div className={styles.workFoot}>
+            <Link href="/projects" className={styles.more}>
+              Full index — all {projects.length} projects
+            </Link>
           </div>
         </section>
 
-        {/* ---------------- Toolkit ---------------- */}
+        {/* ---------------- Toolkit ----------------
+            Static, deliberately. This was a set of horizontal marquees, and the
+            motion broke the only task the section exists for: a recruiter
+            checking whether one specific word is on the list. Worse, the pause
+            control only appeared on hover, so a touch user could not stop it at
+            all — a WCAG 2.2.2 failure. Reference content holds still; the
+            kinetic budget is spent on the masthead, the folios and the work
+            gallery instead. */}
         <section id="skills" className={styles.section}>
           <div className={styles.twoCol}>
-            <Reveal className={styles.colLabel}>
-              <span className={`${styles.sectionNo} mono`}>03</span>
+            <div className={styles.colLabel}>
+              <SectionNo no="03" />
               <h2 className={styles.sectionTitle}>Toolkit</h2>
               <p className={styles.colNote}>
                 Everything here appears in a repository you can open.
               </p>
-            </Reveal>
+            </div>
 
             <dl className={styles.tools}>
               {skillGroups.map((group, i) => (
@@ -164,15 +134,19 @@ export default function Home() {
         {/* ---------------- How I work ---------------- */}
         <section id="principles" className={styles.section}>
           <div className={styles.twoCol}>
-            <Reveal className={styles.colLabel}>
-              <span className={`${styles.sectionNo} mono`}>04</span>
+            <div className={styles.colLabel}>
+              <SectionNo no="04" />
               <h2 className={styles.sectionTitle}>How I work</h2>
               <p className={styles.colNote}>Four habits, each with a scar.</p>
-            </Reveal>
+            </div>
 
             <div className={styles.habits}>
               {principles.map((item, i) => (
-                <Reveal key={item.title} delay={i * 60} className={styles.habit}>
+                <Reveal
+                  key={item.title}
+                  delay={i * 60}
+                  className={styles.habit}
+                >
                   <h3 className={styles.habitTitle}>{item.title}</h3>
                   <p className={styles.habitBody}>{item.body}</p>
                 </Reveal>
@@ -184,17 +158,19 @@ export default function Home() {
         {/* ---------------- Education ---------------- */}
         <section id="education" className={styles.section}>
           <div className={styles.twoCol}>
-            <Reveal className={styles.colLabel}>
-              <span className={`${styles.sectionNo} mono`}>05</span>
+            <div className={styles.colLabel}>
+              <SectionNo no="05" />
               <h2 className={styles.sectionTitle}>Education</h2>
-            </Reveal>
+            </div>
 
             <div>
               {education.map((entry) => (
                 <Reveal key={entry.institution} className={styles.eduRow}>
                   <div className={styles.eduHead}>
                     <h3 className={styles.eduDegree}>{entry.degree}</h3>
-                    <span className={`${styles.eduPeriod} mono`}>{entry.period}</span>
+                    <span className={`${styles.eduPeriod} mono`}>
+                      {entry.period}
+                    </span>
                   </div>
                   <p className={styles.eduInst}>{entry.institution}</p>
                   <p className={styles.eduDetail}>{entry.detail}</p>
@@ -207,20 +183,23 @@ export default function Home() {
         {/* ---------------- Contact ---------------- */}
         <section id="contact" className={styles.contact}>
           <div className={styles.twoCol}>
-            <Reveal className={styles.colLabel}>
-              <span className={`${styles.sectionNo} mono`}>06</span>
+            <div className={styles.colLabel}>
+              <SectionNo no="06" />
               <h2 className={styles.sectionTitle}>Contact</h2>
-            </Reveal>
+            </div>
 
             <div className={styles.contactBody}>
               <p className={styles.contactLede}>
                 I&apos;m looking for a new-grad software engineering role or an
-                internship for 2027. Write below, or email me directly — I reply to
-                everything.
+                internship for 2027. Write below, or email me directly — I reply
+                to everything.
               </p>
 
               <div className={styles.contactActions}>
-                <a href={`mailto:${profile.email}`} className={`${styles.mailto} mono`}>
+                <a
+                  href={`mailto:${profile.email}`}
+                  className={`${styles.mailto} mono`}
+                >
                   {profile.email}
                 </a>
                 <DownloadCV variant="quiet" />

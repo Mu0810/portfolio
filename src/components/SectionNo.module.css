@@ -1,0 +1,45 @@
+.wrap {
+  /* Declared on the parent so it inherits down to .ghost, and so the wrapper can
+     use it to reserve its own height. Custom properties inherit downward only. */
+  --folio-size: clamp(3.6rem, 7vw, 6.4rem);
+
+  position: relative;
+  display: block;
+  /* The ghost is out of flow, so the wrapper reserves its visual height. Without
+     this the numeral lands across the section title. */
+  height: calc(var(--folio-size) * 0.82);
+  margin-bottom: 0.7rem;
+}
+
+/* The oversized outlined folio, counter-scrolling against the page.
+   `text-stroke` draws the outline; engines without it get a low-contrast fill,
+   which still reads as furniture. */
+.ghost {
+  position: absolute;
+  top: 0;
+  left: -0.04em;
+  font-family: var(--font-display);
+  font-size: var(--folio-size);
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--rule-strong);
+  user-select: none;
+  pointer-events: none;
+  transform: translate3d(0, var(--drift, 0px), 0);
+  /* No transition: the transform is written per frame from scroll position, so
+     easing it would make the numeral lag behind the hand. */
+}
+
+@supports not ((-webkit-text-stroke: 1px black) or (text-stroke: 1px black)) {
+  .ghost {
+    color: var(--paper-3);
+    -webkit-text-stroke: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ghost {
+    transform: none;
+  }
+}

@@ -1,0 +1,63 @@
+/* The nameplate. Parallax on --shift/--fade, both written per frame from
+   scroll position by Nameplate.tsx. */
+
+.plate {
+  transform: translate3d(0, var(--shift, 0px), 0);
+  opacity: var(--fade, 1);
+  padding-top: clamp(0.6rem, 2vh, 1.2rem);
+}
+
+.name {
+  font-size: var(--step-5);
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+  /* Words are laid out as inline masks; flex-wrap lets the nameplate break to a
+     second line on narrow screens instead of overflowing the sheet. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.24em;
+}
+
+/* The clipping mask each word rises out of. An inline box will not clip, so the
+   mask has to be inline-block. */
+.mask {
+  display: inline-block;
+  overflow: hidden;
+  /* An exact-height mask clips descenders, so pad the box and pull it back. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.word {
+  display: inline-block;
+  animation: impress 1s var(--ease-lag) both;
+}
+
+@keyframes impress {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 620px) {
+  .name {
+    letter-spacing: -0.025em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plate {
+    transform: none;
+    opacity: 1;
+  }
+
+  /* globals.css collapses animation *duration*, but not delay — without this a
+     staggered word would still sit invisible behind its mask for ~300ms. */
+  .word {
+    animation: none;
+    transform: none;
+  }
+}

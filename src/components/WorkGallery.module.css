@@ -1,0 +1,493 @@
+/* ==========================================================================
+   Work gallery — three renderings of one markup tree.
+
+     1. default (wide + motion ok) : pinned, scroll-driven horizontal spreads
+     2. <= 900px                   : native scroll-snap swipe carousel
+     3. prefers-reduced-motion     : plain vertical stack
+
+   Rules 2 and 3 are pure CSS so they hold before hydration. JS only adds the
+   translateX in case 1.
+   ========================================================================== */
+
+/* Tall spacer. Its height is the scroll budget the horizontal turn spends.
+   85vh per spread felt right: enough scroll to read a panel, not so much that
+   turning the page feels like work. Height lives here, not inline, so the
+   media queries below can override it. */
+.stage {
+  height: calc(var(--panels, 4) * 85vh);
+  position: relative;
+}
+
+.viewport {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  /* `clip`, not `hidden`. Hidden overflow still creates a *programmatically*
+     scrollable box, so when Tab landed on a link in an off-screen spread the
+     browser's "scroll the focused element into view" step set scrollLeft on this
+     element — dragging the absolutely positioned running head and page-turn rail
+     out of the visible area, with nothing to reset them. `clip` crops
+     identically and creates no scroll container, so there is nothing to scroll. */
+  overflow: clip;
+  overflow-clip-margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Clip layer — carries the edge fades, so a partially visible spread reads as
+   "the sheet continues" rather than as text guillotined at the viewport edge.
+
+   The left stop is deliberately 3%: the track is inset by `--gutter` (4vw), and
+   3% is always less than 4vw, so at rest the fade band falls entirely inside the
+   gutter whitespace and the first spread's text is never touched. Once the sheet
+   turns, that same band softens the outgoing page. Fading only the right edge
+   left a hard vertical cut down the left of every mid-turn frame.
+
+   Padded top and bottom to reserve the running head's and the rail's bands: a
+   tall spread is centred in a 100vh box and grows toward both, and neither has a
+   background, so without this a focused link could sit underneath them.
+
+   A mask is not a gradient fill: no colour is introduced, so this keeps the
+   no-gradients rule the palette is built on. */
+.clip {
+  /* One variable drives both the fade ramp and the track's right padding below,
+     so the two cannot drift apart. The first attempt padded the track by
+     `--gutter` (58px at 1440) against a ramp that began 20% — 288px — from the
+     right edge, so the last spread's `source` link still rendered at ~33%
+     opacity, focus ring included. The padding must exceed the ramp. */
+  --fade: 120px;
+
+  overflow: clip;
+  overflow-clip-margin: 0;
+  padding: clamp(6.5rem, 15vh, 9rem) 0 clamp(4rem, 9vh, 5.5rem);
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 3%,
+    black calc(100% - var(--fade)),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 3%,
+    black calc(100% - var(--fade)),
+    transparent 100%
+  );
+}
+
+.track {
+  display: flex;
+  align-items: stretch;
+  width: max-content;
+  margin: 0;
+  /* The right padding is load-bearing, not cosmetic. At progress = 1 the track's
+     right edge coincides with the viewport's by construction, so without padding
+     wider than the fade ramp the last spread's `source`/`demo` links and its year
+     land inside the ramp — they rendered at roughly a third opacity, and so did
+     their focus ring (2.4.11). Padding grows scrollWidth, so it is the padding,
+     not the content, that sits in the fade. */
+  padding: 0 calc(var(--fade) + 1.5rem) 0 var(--gutter);
+  list-style: none;
+  /* No transition. The transform is written per frame from scroll position, so
+     easing it would make the paper lag behind the hand. */
+  will-change: transform;
+}
+
+/* One spread. Sized so two sit side by side like facing broadsheet pages with a
+   sliver of the third showing — at 46rem the second page was cut off mid-word at
+   the viewport edge, which read as a clipping bug rather than as a page turn. */
+.panel {
+  flex: 0 0 auto;
+  width: min(44vw, 33rem);
+  padding-right: clamp(1.75rem, 3.5vw, 3rem);
+  border-left: 1px solid var(--rule);
+  padding-left: clamp(1.5rem, 3vw, 2.75rem);
+  display: flex;
+  align-items: center;
+}
+
+.panelInner {
+  width: 100%;
+}
+
+.panelHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.folio {
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+
+.year {
+  font-size: var(--step--2);
+  color: var(--ink-3);
+}
+
+.title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: clamp(1.1rem, 3vh, 1.9rem);
+  font-size: var(--step-3);
+}
+
+.titleLink {
+  transition: color 0.25s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+
+.titleLink:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.live {
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 0.15rem 0.4rem;
+  /* Nudged off the serif baseline so it reads as a stamp on the headline. */
+  transform: translateY(-0.28em);
+}
+
+.description {
+  margin-top: clamp(0.8rem, 2vh, 1.2rem);
+  font-size: var(--step-0);
+  color: var(--ink-2);
+  line-height: 1.66;
+  max-width: 60ch;
+}
+
+/* The one interesting engineering detail, set as a pull-quote against a rule —
+   the same device the vertical index uses, so the two readings of the work
+   section agree with each other. */
+.pull {
+  margin-top: clamp(1rem, 2.4vh, 1.5rem);
+  padding-left: clamp(0.9rem, 2vw, 1.4rem);
+  border-left: 2px solid var(--accent);
+  font-size: var(--step--1);
+  color: var(--ink-2);
+  line-height: 1.7;
+  max-width: 62ch;
+}
+
+.pullLabel {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 0.35rem;
+}
+
+.panelFoot {
+  margin-top: clamp(1.1rem, 3vh, 1.8rem);
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.stack {
+  font-size: var(--step--2);
+  color: var(--ink-3);
+  line-height: 1.7;
+  max-width: 52ch;
+}
+
+.links {
+  display: flex;
+  gap: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+}
+
+.links a {
+  color: var(--ink-2);
+  border-bottom: 1px solid var(--rule-strong);
+  padding-bottom: 1px;
+  transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.links a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ---------- running head ---------- */
+
+.runningHead {
+  position: absolute;
+  top: clamp(5rem, 13vh, 7.5rem);
+  left: var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: var(--step--2);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  pointer-events: none;
+}
+
+.runningNo {
+  color: var(--accent);
+}
+
+.runningRule {
+  width: 1.6rem;
+  height: 1px;
+  background: var(--rule-strong);
+}
+
+/* Live position. The one element that proves the sheet is advancing while the
+   page's own vertical scroll appears to have stopped. */
+.runningCount {
+  color: var(--ink-2);
+}
+
+/* ---------- page-turn rail ---------- */
+
+.rail {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(1.5rem, 5vh, 3rem);
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+/* Arrows sit together, behind a written label, so they read as "this is how you
+   move" rather than as two stray glyphs in opposite corners. */
+.turnGroup {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.turnLabel {
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-right: 0.15rem;
+}
+
+.turn {
+  flex: 0 0 auto;
+  width: 2.4rem;
+  height: 2.4rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--ink-3);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-size: 0.95rem;
+  transition:
+    color 0.25s var(--ease),
+    border-color 0.25s var(--ease),
+    background 0.25s var(--ease),
+    opacity 0.25s var(--ease);
+}
+
+.turn:hover:not([aria-disabled="true"]) {
+  color: var(--accent-ink);
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+/* Styled from aria-disabled, because these buttons stay focusable — see the note
+   in WorkGallery.tsx on why a real `disabled` attribute dropped focus to body. */
+.turn[aria-disabled="true"] {
+  opacity: 0.32;
+  cursor: default;
+}
+
+.ticks {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ticks li {
+  flex: 1 1 0;
+}
+
+/* Each tick is a full-height hit area over a visible hairline, so the target is
+   comfortably clickable while still reading as a rule. Separated by a gap and
+   given a resting colour, because as one continuous line the rail read as a
+   progress bar and its segments did not look clickable. */
+.tick {
+  display: block;
+  width: 100%;
+  height: 1.5rem;
+  position: relative;
+}
+
+.tick::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--rule-strong);
+  transition:
+    background 0.3s var(--ease),
+    height 0.2s var(--ease);
+}
+
+.tick:hover::before {
+  background: var(--ink-3);
+}
+
+.tickOn::before {
+  background: var(--accent);
+  height: 3px;
+}
+
+/* ==========================================================================
+   Rendering 2 — swipe carousel on narrow viewports
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .stage {
+    height: auto;
+  }
+
+  .viewport {
+    position: static;
+    height: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    /* Momentum scrolling on iOS. */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* The running head belongs to the pinned rendering. Here the section's own
+     heading is only a few hundred pixels up the page, so repeating it is
+     clutter. */
+  .runningHead {
+    display: none;
+  }
+
+  /* No box at all, so the mask and the extra overflow context disappear and
+     .track becomes a direct layout child of the scrolling .viewport again. */
+  .clip {
+    display: contents;
+  }
+
+  .track {
+    padding: 0 0 0 var(--gutter);
+    width: max-content;
+    transform: none;
+  }
+
+  .panel {
+    width: min(86vw, 34rem);
+    scroll-snap-align: center;
+    padding: 0 clamp(1.1rem, 4vw, 1.75rem);
+    align-items: flex-start;
+  }
+
+  .panel:first-child {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .rail {
+    position: static;
+    margin: 1.75rem var(--gutter) 0;
+  }
+}
+
+/* ==========================================================================
+   Rendering 3 — reduced motion: a plain vertical index, no pin, no turn
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .stage {
+    height: auto;
+  }
+
+  /* The pinned and carousel renderings are full-bleed on purpose. A stacked
+     vertical read is not: without this the panels ran the full viewport width
+     with no gutter, so the first headline was clipped at x=0 and the "source"
+     link fell off the right edge. Put the section back inside the measure. */
+  .viewport {
+    position: static;
+    height: auto;
+    overflow: visible;
+    scroll-snap-type: none;
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+  }
+
+  .runningHead {
+    display: none;
+  }
+
+  .clip {
+    display: contents;
+  }
+
+  .track {
+    flex-direction: column;
+    width: auto;
+    padding: 0;
+    transform: none;
+    will-change: auto;
+  }
+
+  .panel {
+    width: auto;
+    max-width: 72ch;
+    border-left: none;
+    border-top: 1px solid var(--rule);
+    padding: clamp(1.4rem, 4vh, 2.2rem) 0;
+    align-items: flex-start;
+  }
+
+  .panel:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  /* The rail stays. It is motion-free navigation — `goTo` scrolls instantly in
+     this rendering rather than smoothly — and keeping it lets the section's note
+     promise "the arrows turn the page" in every rendering instead of only two of
+     them. Hiding it, as an earlier pass did, quietly made that promise false. */
+  .rail {
+    position: static;
+    margin-top: 1.75rem;
+  }
+}

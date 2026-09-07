@@ -1,0 +1,198 @@
+/* ==========================================================================
+   Masthead — broadsheet front page
+   ========================================================================== */
+
+.masthead {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: clamp(5.5rem, 12vh, 7.5rem) var(--gutter) clamp(2.5rem, 6vh, 4rem);
+}
+
+/* ---------- edition line ---------- */
+
+.edition {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.editionAccent {
+  color: var(--accent);
+}
+
+/* A rule between items rather than a bullet — punctuation from the grid. */
+.editionSep {
+  flex: 0 0 auto;
+  width: 1.4rem;
+  height: 1px;
+  background: var(--rule-strong);
+}
+
+/* ---------- masthead fence ---------- */
+
+.fence {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: clamp(1.1rem, 3vh, 1.8rem);
+}
+
+.fence span:first-child {
+  height: 2px;
+  background: var(--ink);
+}
+
+.fence span:last-child {
+  height: 1px;
+  background: var(--rule-strong);
+}
+
+/* ---------- deck ---------- */
+
+.deck {
+  margin-top: clamp(2rem, 5vh, 3.25rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 19rem);
+  gap: clamp(2rem, 6vw, 4.5rem);
+  align-items: start;
+}
+
+.headline {
+  font-size: var(--step-3);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+.headline span {
+  display: block;
+}
+
+.headline em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.standfirst {
+  margin-top: clamp(1.1rem, 3vh, 1.75rem);
+  max-width: 54ch;
+  font-size: var(--step-1);
+  color: var(--ink-2);
+  line-height: 1.58;
+}
+
+/* The scannable stack line. Rule above it so it reads as a data row under the
+   standfirst rather than as more prose. */
+.stackLine {
+  margin-top: clamp(1rem, 2.5vh, 1.5rem);
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--rule);
+  max-width: 54ch;
+  font-size: var(--step--1);
+  color: var(--ink-2);
+  line-height: 1.8;
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: clamp(1.5rem, 4vh, 2.25rem);
+}
+
+.ctaQuiet {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  font-size: var(--step--1);
+  font-weight: 500;
+  transition: border-color 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+.ctaQuiet:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---------- portrait plate + vitals ---------- */
+
+.plateCol {
+  border-left: 1px solid var(--rule);
+  padding-left: clamp(1.25rem, 3vw, 2.25rem);
+}
+
+.vitals {
+  margin-top: 1.6rem;
+}
+
+.vital {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0.75rem;
+  padding: 0.55rem 0;
+  border-top: 1px solid var(--rule);
+  font-size: var(--step--1);
+}
+
+.vitalKey {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-top: 0.18rem;
+}
+
+.vitalVal {
+  color: var(--ink-2);
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.vitalLink {
+  border-bottom: 1px solid var(--rule-strong);
+  padding-bottom: 1px;
+  transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.vitalLink:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 900px) {
+  .deck {
+    grid-template-columns: 1fr;
+  }
+
+  .plateCol {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--rule);
+    padding-top: 2rem;
+    display: grid;
+    grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .vitals {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .plateCol {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}

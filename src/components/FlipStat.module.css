@@ -1,0 +1,15 @@
+.value {
+  display: block;
+  font-size: clamp(2.1rem, 4.6vw, 3.4rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  line-height: 1;
+  /* Tabular figures come from .mono; this keeps the box from reflowing as the
+     glyphs change width mid-flap. */
+  font-variant-numeric: tabular-nums;
+}
+
+.flapping {
+  color: var(--accent);
+}
