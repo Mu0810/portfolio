@@ -22,6 +22,23 @@ export const profile = {
   resumeName: "Manish-Kumar-Soni-CV.pdf",
   photo: "/profile.jpg",
   initials: "MS",
+  /**
+   * The scannable stack line in the masthead.
+   *
+   * Every entry here also appears in `skillGroups` below, so this introduces no
+   * new claim — it is the recruiter-facing subset, ordered by how often it shows
+   * up on a job requirement sheet rather than by preference.
+   */
+  stack: [
+    "TypeScript",
+    "React",
+    "Next.js",
+    "Node.js",
+    "Python",
+    "PostgreSQL",
+    "Prisma",
+    "Docker",
+  ],
   socials: [
     { label: "GitHub", href: "https://github.com/Mu0810", handle: "@Mu0810" },
     {
@@ -126,7 +143,9 @@ export const skillGroups = [
     ],
   },
   {
-    title: "How I work",
+    // Not "How I work": that is section 04's heading, and having the same name
+    // label a skills row directly above it read as the same thing twice.
+    title: "Testing & practice",
     items: [
       "Integration testing",
       "Vitest / Supertest / Pytest",

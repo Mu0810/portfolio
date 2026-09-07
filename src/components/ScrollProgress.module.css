@@ -1,0 +1,23 @@
+/* The press rule: a 2px hairline pinned under the nav that fills as you read.
+   scaleX on a transform, so it never triggers layout. */
+
+.rail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 101;
+  background: var(--accent);
+  transform: scaleX(var(--progress, 0));
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+/* Not just paused — removed. With motion off there is nothing for this to
+   express, and CSS gets rid of it before hydration rather than after. */
+@media (prefers-reduced-motion: reduce) {
+  .rail {
+    display: none;
+  }
+}
