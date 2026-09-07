@@ -214,6 +214,39 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    title: "Echo Runner",
+    description:
+      "A 2D puzzle-platformer for Android running on its own engine. Each thirty-second take is recorded and replayed as an Echo, so a puzzle is solved by choreographing several versions of yourself — one holding a switch while an earlier one crosses the door it opens. Levels are data-driven JSON; 12,700 lines of Kotlin with 57 unit tests.",
+    highlight:
+      "An Echo replays resolved state, not input. Replaying keystrokes drifts the moment anything else in the world differs, so each take records the positions the simulation actually produced and the ghost is kinematic — which is what makes a thirty-second replay identical on every run. The loop is a hand-written 60 Hz fixed timestep drawing to a Compose Canvas: no game engine, and determinism is a property of the design rather than something patched in afterwards.",
+    tags: ["Kotlin", "Jetpack Compose", "Android", "Custom game loop", "Determinism"],
+    year: "2026",
+    href: "https://github.com/Mu0810/echo-runner",
+    featured: true,
+  },
+  {
+    title: "DON'T LOOK AWAY",
+    description:
+      "A first-person psychological horror game for Android in Unity 6.3. The mechanic is observation — what you look at, and what you look away from, changes the world: an entity advances only while unobserved, and a door can be held shut by being watched. Every asset is generated in code, with no imported art: parametric geometry, procedural textures, synthesised audio. 56,000 lines of C#.",
+    highlight:
+      "Observation is modelled as a general source-to-target relation rather than a player-only check, so an entity can observe a door exactly as the player observes the entity — which is the only reason entity-observes-object puzzles are expressible at all. Occlusion raycasts are throttled to 10 Hz and staggered across entities so the cost does not scale with the cast, and observed/unobserved durations are centralised in one snapshot instead of being recomputed by each system that needs them.",
+    tags: ["C#", "Unity 6.3", "URP Forward+", "Android", "Procedural assets"],
+    year: "2026",
+    href: "https://github.com/Mu0810/dont-look-away",
+    featured: true,
+  },
+  {
+    title: "Rocket Recruiters Portal",
+    description:
+      "A candidate application portal and hiring pipeline for a recruitment agency: a multi-step application with CV upload on the front, and an admin dashboard behind it to filter, search, annotate and move candidates through a status pipeline, with CSV export and an email notification on every submission.",
+    highlight:
+      "Zero npm dependencies — not as a stunt, but because the standard library covers it: node:sqlite for storage, node:http for the server, built-in fetch and FormData for uploads, and a hand-written SMTP client against RFC 5321 handling implicit TLS, STARTTLS and both AUTH modes rather than pulling in a mailer. Candidate answers live in a single JSON column, so adding a question to the schema needs no migration; only the fields actually filtered, sorted or searched on get their own column.",
+    tags: ["Node.js", "node:sqlite", "Zero dependencies", "SMTP", "Google Apps Script"],
+    year: "2026",
+    href: "https://github.com/Mu0810/rr",
+    featured: true,
+  },
+  {
     title: "Meridian Reserve",
     description:
       "A luxury hotel booking flow — browse suites, pick dates and guests, get a priced quote, receive a retrievable confirmation code. No backend, no router, no component library.",
