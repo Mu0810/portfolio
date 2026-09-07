@@ -1,0 +1,28 @@
+# Canonicalises author identities for `git log`, `git shortlog` and `git blame`.
+#
+# Rewrites nothing: git applies this at read time, so every commit SHA and the
+# published history on main stay exactly as they are. GitHub's web UI ignores
+# mailmap, so this fixes local history views only.
+#
+# Four identities accumulated across this repo's history, all the same person:
+#
+#   Manish Kumar Soni <144194721+Mu0810@users.noreply.github.com>  (6 commits)
+#   Mu0810            <144194721+Mu0810@users.noreply.github.com>  (2)
+#   Mu0810            <Mu0810@users.noreply.github.com>            (1, legacy
+#                       noreply form without the account-id prefix)
+#   hello             <hello@hellos-MacBook-Air.local>             (1, a machine
+#                       fallback -- an account name plus a hostname, which
+#                       GitHub cannot link to any account)
+#
+# The two-argument form below maps *any* commit carrying the listed email to the
+# canonical name and email, whatever name that commit recorded -- so it covers
+# the "Mu0810" and "hello" name variants without needing an entry each.
+#
+# Deliberately NOT mapped: Kiro Agent
+# <244629292+kiro-agent@users.noreply.github.com>. Those commits were authored by
+# an agent, not by Manish, and collapsing them here would claim work under the
+# wrong name in the opposite direction.
+
+Manish Kumar Soni <0810sonimanish@gmail.com> <144194721+Mu0810@users.noreply.github.com>
+Manish Kumar Soni <0810sonimanish@gmail.com> <Mu0810@users.noreply.github.com>
+Manish Kumar Soni <0810sonimanish@gmail.com> <hello@hellos-MacBook-Air.local>
